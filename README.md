@@ -1,17 +1,18 @@
-# cs653-final (Need a repo name)
+# ML for MD simulations
   
-## Members: 
-Jose Cobena - PhD CHE  
-Spencer Ortega - MS CS HPC 
+## Authors
+Jose Cobena (jcoben@usc.edu) - PhD CHE  
+Spencer Ortega (sportega@usc.edu) - MS CS 
   
 ## Problem description:
-Reducing cpu hours by using Machine Learning to predict properties from MD simulations.  
-Properties: melting point, diffusion coefficient, etc.  
+Reducing cpu hours by using Machine Learning to predict ( some property ) from MD simulations.  
+Properties ex: melting point, diffusion coefficient, etc.  
 
 ## Methods:
-LAMMPS - Parallel MD Simulation  
-Machine Learning - supervised learning (regression, decesion tree, knn) unsupervised learning (clustering)  
+LAMMPS - Parallel MD simulator
+What kind of simulation? ( nano tube with water )
+Machine Learning - supervised learning (regression, decesion tree, knn, NN) unsupervised learning (clustering)  
 
 ## Expected results.
-Algorithm/Model that can be used for to predict these MD properities.  
+Algorithm/Model/weights that can be used for to predict these MD properities.  
 
