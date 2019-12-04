@@ -1,7 +1,7 @@
 # ML for MD simulations
   
 ## Authors
-Jose Cobena (jcoben@usc.edu) - PhD CHE  
+Jose Cobena (jcobena@usc.edu) - PhD CHE  
 Spencer Ortega (sportega@usc.edu) - MS CS 
   
 ## Problem
