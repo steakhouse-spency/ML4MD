@@ -5,8 +5,9 @@ Jose Cobena (jcobena@usc.edu) - PhD CHE
 Spencer Ortega (sportega@usc.edu) - MS CS 
   
 ## Problem
-Reducing cpu hours by using machine learning to predict ( some property ) from MD simulations.  
-Properties ex: melting point, diffusion coefficient, etc.  
+Reducing cpu hours by using machine learning to predict ( some property ) from MD simulations.
+features: nano tube diamater, water density, temperature
+Properties ex: diffusion coefficient and relaxation time.  
 
 ## Methods
 LAMMPS - Parallel MD simulator
