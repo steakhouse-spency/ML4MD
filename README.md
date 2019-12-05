@@ -1,4 +1,4 @@
-# ML for MD simulations
+# Prediction of Relaxation Time of Water in Carbon Nanotubes
   
 ## Authors
 Jose Cobena (jcobena@usc.edu) - PhD CHE  
