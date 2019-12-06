@@ -10,7 +10,7 @@ Molecular dynamics (MD) simulations are typically used to study glassy systems s
 ![Image of workflow](https://github.com/spencer-ortega/cs653-final/blob/master/images/workflow.jpg)
   
 ## Problem
-Features (input): nano tube diamater, density (water), temperature, average displacement at time t (divergence time)
+Features (input): nano tube diamater, density (water), temperature, average displacement at time t (divergence time), intial cage-rearrangement time.
 Label (output): relaxation time (water)
 
 ## Methods
