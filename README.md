@@ -1,7 +1,7 @@
 # Prediction of the Relaxation Time of Water in Carbon Nanotubes
   
 ## Authors
-Jose Cobena (jcobena@usc.edu) - PhD CHE  
+Jose Cobena (cobenare@usc.edu) - PhD CHE  
 Spencer Ortega (sportega@usc.edu) - MS CS 
 
 ## Abstract
