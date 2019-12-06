@@ -19,3 +19,6 @@ Supervised Learning - regression, decesion tree, knn, NN, etc.
 
 ## Expected Results
 Model that can be used to predict relaxation time of water.  
+
+## References
+[1] Cobena-Reyes, J., Kalia, R. K., & Sahimi, M. (2018). Complex behavior of ordered and icelike water in carbon nanotubes near its bulk boiling point. The journal of physical chemistry letters, 9(16), 4746-4752.
