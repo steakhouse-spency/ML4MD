@@ -24,9 +24,6 @@ empty_tube_file.close()
 # get x,y coordinants representing the center of the Nano Tube  
 tube_center = get_tube_center(tube_atoms)
 print(tube_center)
-tube_center = get_tube_center(tube_atoms)
-print(tube_center)
-# exit(1)
 
 # move tube to center of box
 # moveTube(tube_atoms, tube_center)
@@ -51,51 +48,29 @@ water_atoms = sorted(water_atoms)
 water_conect = water_conections(oxygen_quantity, startn)
 
 
-
 '''
     output pdb of water-filled nanotube
 
 '''
 
-atoms = tube_atoms + water_atoms
+centerAtoms(tube_atoms, tube_center)
+centerAtoms(water_atoms, tube_center)
+
+print("new tube center: ", get_tube_center(tube_atoms))
 
 
-# print(tube_atoms[0])
-# print(water_atoms[0])
-# exit(1)
-conects = tube_conect + water_conect
 final_out = open("output.pdb", 'w')
 final_out.write(header)
 
-for atom in atoms:
-	line = formatPdbRow(atom)
+for atom in tube_atoms:
+	line = formatPdbRow(atom, True)
 	final_out.write(line)
+for atom in water_atoms:
+    line = formatPdbRow(atom, False)
+    final_out.write(line)
+for conect in tube_conect+water_conect:
+    final_out.write(conect)
 
-
-for conect in conects:
-	line = "CONECT "
-	for i in conect[1:]:
-
-		line += str(i) + " "
-	line = line[:-1] + "\n"
-	final_out.write(line)
-
-
-# convert every row to one string and write to final pdb
-# for row in final_list:
-
-
-#     for i, col in enumerate(row):
-#         if i >= 6 and i <= 8:
-#             # print(col)
-#             # print(round(col,3))
-#             rounded =  str(round(float(col),3))
-#             line += rounded + "\t"
-#         else:
-#             line += str(col) + "\t"
-
-#     line = line[:-1] + "\n"
-#     final_out.write(line)
 final_out.write("END\n")
 final_out.close()
 

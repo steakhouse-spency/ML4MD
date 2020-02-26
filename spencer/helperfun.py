@@ -7,6 +7,7 @@ import copy
 
 from globalvar import *
 
+
 def seperate_empty_tube(empty_tube_file):
     header = None
     atoms = []
@@ -16,65 +17,32 @@ def seperate_empty_tube(empty_tube_file):
     header = empty_tube_file.readline()
 
     # iterate thru file, seperate according to first column
-
     for i, row in enumerate(empty_tube_file):
-        col = row.split()
+        # col = row.split()
 
-        if col[0] == "HETATM":
-            col[0] = residue
-            #col[1] = atom id
-            col[2] = "C"
+        record = row[0:6].strip()
+        
+        atom = []
+        if record in record_types:
+            # atom id
+            atom.append(row[6:11].strip())
+            # group id
+            atom.append(row[22:26].strip())
+            # x, y, z coord
+            atom.append(row[30:38].strip())
+            atom.append(row[38:46].strip())
+            atom.append(row[46:54].strip())
+            # element
+            atom.append(row[76:78].strip())
+            atoms.append(atom)
 
-            del col[3]
-            
-            # handle when col 4 and col 5 get combined
-            if len(col[3]) > 1:
-                temp = col[3][1:]
-                col.insert(4, temp)
-            col[3] = "XXX"
-            # col[4] = mol id
-            # col[5,6,7] x,y,z
-            col[8] = 1.00
-            col[9] = 0.00
-            col[10] = "C"
+        elif record == "CONECT":
+            conect.append(row.replace("  ", " "))
 
-            if(len(col) > 11): del col[11:]
-
-            atoms.append(col)
-
-        elif col[0] == "CONECT":
-            conect.append(col)
-
-        elif col[0] == "END":
-            break
-
-        else:
+        elif record != "END":
             print(col)
             print("file format error: check empty tube file")
             exit(1)
-
-
-    # z_max = -10000000
-    # z_min = 10000000
-    # for i,atom in enumerate(atoms):
-    #     z_max = max(z_max, float(atom[8]))
-    #     z_min = min(z_min, float(atom[8]))
-
-    # print(z_min)
-    # print(z_max)
-    # exit(1)
-
-
-    # move atoms/conect coordinates
-    # xyz=(100,100,420)
-
-    # find min (x, y, z) only if negative
-        # add min to all atoms
-
-
-    # 
-    # min(min(atoms))
-
 
     return header, atoms, conect
 
@@ -118,22 +86,73 @@ def normalizeCoords(atoms):
         atom[6] = float(atom[6]) - y_min
         atom[7] = float(atom[7]) - z_min
 
+def centerAtoms(atoms, tube_center):
+    box_center = box/2
+    move_x = abs(tube_center[0]-box_center)
+    move_y = abs(tube_center[1]-box_center)
+    for atom in atoms:
+        atom[2] = float(atom[2]) + move_x
+        atom[3] = float(atom[3]) + move_y
+
 
 
 def formatDec(dec):
 	dec = "{:.3f}".format(float(dec))
 	return dec
 
-def formatPdbRow(atom):
-    line = 'ATOM  {:>5} {:>4} XXX  {:>4}    {:>8}{:>8}{:>8} {:>5} {:>5}          {:>2}'
-    line = line.format( atom[1], 
-						atom[2], 
-						atom[4], 
-						formatDec(atom[5]), 
-						formatDec(atom[6]), 
-						formatDec(atom[7]), 
-						"1.00", "0.00", atom[10])
-    return line+"\n"
+def formatPdbRow(atom, tube):
+    line = 'ATOM  {:>5} {:>4} XXX  {:>4}    {:>8}{:>8}{:>8}  1.00  0.00          {:>2}\n'
+
+    line = line.format(atom[0], 
+                (atom[5] if tube else "MOL"), 
+                atom[1], 
+                formatDec(atom[2]), 
+                formatDec(atom[3]),   
+                formatDec(atom[4]), 
+                atom[5])
+
+    return line
+
+
+# only needs 
+def get_tube_center(tube_atoms):
+
+        coordinatesxy = []
+
+        for i, atom in enumerate(tube_atoms):
+            # 6 = x, 7 = y, 8 = z
+            coordsxy = [float(atom[2]), float(atom[3]), float(atom[4])]
+            coordinatesxy.append(coordsxy)
+       
+        # randomly choose 3 (x,y,z) coordinates 
+        xyz1 = random.choice(coordinatesxy)
+        xyz2 = random.choice(coordinatesxy)
+        xyz3 = random.choice(coordinatesxy)
+
+        # only compare x and y?
+        while xyz1[0] == xyz2[0] or xyz1[0] == xyz3[0] or xyz2[0] == xyz3[0] or \
+              xyz1[1] == xyz2[1] or xyz1[1] == xyz3[1] or xyz2[1] == xyz3[1]:
+            
+            xyz1 = random.choice(coordinatesxy)
+            xyz2 = random.choice(coordinatesxy)
+            xyz3 = random.choice(coordinatesxy)
+        
+        circle_points_3 = [xyz1, xyz2, xyz3]
+        circle_points_3_s = sorted(circle_points_3, key = lambda list_of_3:list_of_3[0])
+        #print(circle_points_3_s)
+        
+        # geometry to compute center
+        p1 = circle_points_3_s[0]
+        p2 = circle_points_3_s[1]
+        p3 = circle_points_3_s[2]
+        ma = (p2[1] - p1[1]) / (p2[0] - p1[0])
+        mb = (p3[1] - p2[1]) / (p3[0] - p2[0])
+        center_x = ((ma*mb*(p1[1] - p3[1])) + (mb*(p1[0] + p2[0])) - (ma*(p2[0] + p3[0]))) /(2*(mb-ma))
+        center_y = ((-1/ma) * (center_x -((p1[0] + p2[0])/2.0))) + ((p1[1] + p2[1])/2.0)
+
+        return [center_x, center_y]
+        
+
 
 
 def assign_positions_to_oxygens_list_pdb_new(number_of_atoms, tube_center, startn):
@@ -232,64 +251,22 @@ def pe_pairwise_LJ(list_oxy_positions, sigma_O, eps_O, cutoff):
                     
                     
     return pe_sum
-                    
-
-# only needs 
-def get_tube_center(tube_atoms):
-
-        coordinatesxy = []
-
-        for i, atom in enumerate(tube_atoms):
-            # 6 = x, 7 = y, 8 = z
-            coordsxy = [float(atom[5]), float(atom[6]), float(atom[7])]
-            coordinatesxy.append(coordsxy)
-       
-        # randomly choose 3 (x,y,z) coordinates 
-        xyz1 = random.choice(coordinatesxy)
-        xyz2 = random.choice(coordinatesxy)
-        xyz3 = random.choice(coordinatesxy)
-
-        # only compare x and y?
-        while xyz1[0] == xyz2[0] or xyz1[0] == xyz3[0] or xyz2[0] == xyz3[0] or \
-              xyz1[1] == xyz2[1] or xyz1[1] == xyz3[1] or xyz2[1] == xyz3[1]:
-            
-            xyz1 = random.choice(coordinatesxy)
-            xyz2 = random.choice(coordinatesxy)
-            xyz3 = random.choice(coordinatesxy)
-        
-        circle_points_3 = [xyz1, xyz2, xyz3]
-        circle_points_3_s = sorted(circle_points_3, key = lambda list_of_3:list_of_3[0])
-        #print(circle_points_3_s)
-        
-        # geometry to compute center
-        p1 = circle_points_3_s[0]
-        p2 = circle_points_3_s[1]
-        p3 = circle_points_3_s[2]
-        ma = (p2[1] - p1[1]) / (p2[0] - p1[0])
-        mb = (p3[1] - p2[1]) / (p3[0] - p2[0])
-        center_x = ((ma*mb*(p1[1] - p3[1])) + (mb*(p1[0] + p2[0])) - (ma*(p2[0] + p3[0]))) /(2*(mb-ma))
-        center_y = ((-1/ma) * (center_x -((p1[0] + p2[0])/2.0))) + ((p1[1] + p2[1])/2.0)
-
-        return [center_x, center_y]
-        
-
 
 def water_conections(oxygen_quantity, startn):
     conect_list = []
     i = startn #1st atom, oxygen
     conect = 'CONECT'
     while i < ((3*oxygen_quantity)+startn):
-        conection1 = [conect, i, i+1, i+2]
-        conection2 = [conect, i+1, i]
-        conection3 = [conect, i+2, i]
+        conection1 = " ".join([conect, str(i), str(i+1), str(i+2)]) + "\n"
+        conection2 = " ".join([conect, str(i+1), str(i)]) + "\n"
+        conection3 = " ".join([conect, str(i+2), str(i)]) + "\n"
         cnt = [conection1, conection2, conection3]
         i = i + 3 #to skip the previous atoms
         #print(i)
         conect_list.extend(cnt)
     #print(oxygen_quantity+startn)
     return conect_list
-    
-    
+      
 class water_class_pdb(object):
     def __init__(self, oxygen_list, typeO, hydrogen1, hydrogen2, typeH, start_number):
         self._Otype = typeO
@@ -298,7 +275,7 @@ class water_class_pdb(object):
         self._h1_list = hydrogen1
         self._h2_list = hydrogen2
         self._start = int(start_number)
-        self._atoms = residue
+        self._atoms = "ATOM"
         self._xxx = 'XXX'
         self._anumb = 'MOL'
         self._one = '1.00'
@@ -310,33 +287,39 @@ class water_class_pdb(object):
         oxy_final = []
         n = self._start
         for oxy_coords in self._oxy_list:
-            final_line = [self._atoms, n, self._anumb, self._xxx, n, format(oxy_coords[0], '.3f'),\
-                           round(oxy_coords[1],3), round(oxy_coords[2],3),  self._one,  self._zero,  self._oxy_element]
+            # final_line = [self._atoms, n, self._anumb, self._xxx, n, format(oxy_coords[0], '.3f'),\
+            #                round(oxy_coords[1],3), round(oxy_coords[2],3),  self._one,  self._zero,  self._oxy_element]
+            # final_line = []
+            final_line = [str(n), str(n), formatDec(oxy_coords[0]), formatDec(oxy_coords[1]), formatDec(oxy_coords[2]), self._oxy_element]
             n = n+3
             oxy_final.append(final_line)
+
         return oxy_final
     
     def hydro_processed1(self):
         hydro_final1 = []
         nh1 = self._start + 1
         for hydro1_coords in self._h1_list:
-            final_line = [self._atoms, nh1, self._anumb, self._xxx, nh1-1, format(hydro1_coords[0],'.3f'),\
-                           format(hydro1_coords[1],'.3f'), format(hydro1_coords[2],'.3f'),  self._one,  self._zero,  self._hyd_element]
+            # final_line = [self._atoms, nh1, self._anumb, self._xxx, nh1-1, format(hydro1_coords[0],'.3f'),\
+            #                format(hydro1_coords[1],'.3f'), format(hydro1_coords[2],'.3f'),  self._one,  self._zero,  self._hyd_element]
+            final_line = [str(nh1), str(nh1-1), formatDec(hydro1_coords[0]), formatDec(hydro1_coords[1]), formatDec(hydro1_coords[2]), self._hyd_element]
             nh1 = nh1 + 3
             hydro_final1.append(final_line)
+
         return hydro_final1
     
     def hydro_processed2(self):
         hydro_final2 = []
         nh2 = self._start + 2
         for hydro2_coords in self._h2_list:
-            final_line = [self._atoms, nh2, self._anumb, self._xxx, nh2-2, format(hydro2_coords[0],'.3f'),\
-                           format(hydro2_coords[1],'.3f'), format(hydro2_coords[2],'.3f'),  self._one,  self._zero,  self._hyd_element]
+            # final_line = [self._atoms, nh2, self._anumb, self._xxx, nh2-2, format(hydro2_coords[0],'.3f'),\
+            #               format(hydro2_coords[1],'.3f'), format(hydro2_coords[2],'.3f'),  self._one,  self._zero,  self._hyd_element]
+            final_line = [str(nh2), str(nh2-1), formatDec(hydro2_coords[0]), formatDec(hydro2_coords[1]), formatDec(hydro2_coords[2]), self._hyd_element]
             nh2 = nh2 + 3
             hydro_final2.append(final_line)
-        return hydro_final2
 
-    
+        return hydro_final2
+   
 def final_position_for_H(oxy_list, a_list):
     final_position_of_a = []
     for a1, a0 in zip(oxy_list, a_list):
@@ -359,8 +342,6 @@ def calculate_water_molecules_inside_nanotube(density_g_cc):
     # print(den_molecules_ang3)
     water_molecules_to_fill = den_molecules_ang3*v_ang3
     return int(water_molecules_to_fill)
-
-
 
 def adding_H1(number_of_atoms, angle, bond_length):
     rand_rot = np.random.randint(1, 3)

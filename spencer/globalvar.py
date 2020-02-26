@@ -21,16 +21,16 @@ bond_length = 0.9572
 angle = 104.52
 safety_clearance = 1.0
 
+
 # residue within pdb file for atoms (e.g. HETATM, ATOM, etc.)
 
-recordType = "ATOM"
-residue = "ATOM"
+record_types = ["HETATM", "ATOM"]
 
 # nano tube structure parameters
 m = 15
 n = 7
 D = 15.2
-
+residue = "XXX"
 # pdb file path
 # only for empty nano tubes
 # pdb must only have: 1 line header, nano tube atoms of type 'residue', and CONECT for nano tube atoms
