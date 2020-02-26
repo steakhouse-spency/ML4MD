@@ -23,6 +23,18 @@ empty_tube_file.close()
 '''
 # get x,y coordinants representing the center of the Nano Tube  
 tube_center = get_tube_center(tube_atoms)
+print(tube_center)
+tube_center = get_tube_center(tube_atoms)
+print(tube_center)
+# exit(1)
+
+# move tube to center of box
+# moveTube(tube_atoms, tube_center)
+
+# centerCoordsInBox(tube_atoms, tube_center)
+
+
+
 startn = len(tube_atoms)+1
 oxygen_quantity = calculate_water_molecules_inside_nanotube(rho)
 oxygens = assign_positions_to_oxygens_list_pdb_new(oxygen_quantity, tube_center, startn)
@@ -45,23 +57,45 @@ water_conect = water_conections(oxygen_quantity, startn)
 
 '''
 
-final_list = tube_atoms + water_atoms + tube_conect + water_conect
+atoms = tube_atoms + water_atoms
+
+
+# print(tube_atoms[0])
+# print(water_atoms[0])
+# exit(1)
+conects = tube_conect + water_conect
 final_out = open("output.pdb", 'w')
 final_out.write(header)
-# convert every row to one string and write to final pdb
-for row in final_list:
-    line = ""    
-    for i, col in enumerate(row):
-        if i >= 6 and i <= 8:
-            # print(col)
-            # print(round(col,3))
-            rounded =  str(round(float(col),3))
-            line += rounded + "\t"
-        else:
-            line += str(col) + "\t"
 
-    line = line[:-1] + "\n"
-    final_out.write(line)
+for atom in atoms:
+	line = formatPdbRow(atom)
+	final_out.write(line)
+
+
+for conect in conects:
+	line = "CONECT "
+	for i in conect[1:]:
+
+		line += str(i) + " "
+	line = line[:-1] + "\n"
+	final_out.write(line)
+
+
+# convert every row to one string and write to final pdb
+# for row in final_list:
+
+
+#     for i, col in enumerate(row):
+#         if i >= 6 and i <= 8:
+#             # print(col)
+#             # print(round(col,3))
+#             rounded =  str(round(float(col),3))
+#             line += rounded + "\t"
+#         else:
+#             line += str(col) + "\t"
+
+#     line = line[:-1] + "\n"
+#     final_out.write(line)
 final_out.write("END\n")
 final_out.close()
 
@@ -82,3 +116,4 @@ final_out.close()
 
 
 '''
+

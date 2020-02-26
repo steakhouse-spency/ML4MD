@@ -16,37 +16,61 @@ def seperate_empty_tube(empty_tube_file):
     header = empty_tube_file.readline()
 
     # iterate thru file, seperate according to first column
+
     for i, row in enumerate(empty_tube_file):
         col = row.split()
 
-        if col[0] == residue:
-            # handle when col 4 and col 5 get combined
-            print(col[4])
+        if col[0] == "HETATM":
+            col[0] = residue
+            #col[1] = atom id
+            col[2] = "C"
 
-            if len(col[4]) > 1:
-                atoms.append(col[4][0])
-                atoms.append(col[4][1:])
-                print( col[4][1:])
-            else:
-                atoms.append(col)
+            del col[3]
+            
+            # handle when col 4 and col 5 get combined
+            if len(col[3]) > 1:
+                temp = col[3][1:]
+                col.insert(4, temp)
+            col[3] = "XXX"
+            # col[4] = mol id
+            # col[5,6,7] x,y,z
+            col[8] = 1.00
+            col[9] = 0.00
+            col[10] = "C"
+
+            if(len(col) > 11): del col[11:]
+
+            atoms.append(col)
+
         elif col[0] == "CONECT":
             conect.append(col)
+
         elif col[0] == "END":
             break
+
         else:
+            print(col)
             print("file format error: check empty tube file")
             exit(1)
 
-    exit(1)
+
+    # z_max = -10000000
+    # z_min = 10000000
+    # for i,atom in enumerate(atoms):
+    #     z_max = max(z_max, float(atom[8]))
+    #     z_min = min(z_min, float(atom[8]))
+
+    # print(z_min)
+    # print(z_max)
+    # exit(1)
 
 
     # move atoms/conect coordinates
-    xyz=(100,100,420)
+    # xyz=(100,100,420)
 
     # find min (x, y, z) only if negative
         # add min to all atoms
 
-    normalizeCoord(atoms)
 
     # 
     # min(min(atoms))
@@ -55,30 +79,61 @@ def seperate_empty_tube(empty_tube_file):
     return header, atoms, conect
 
 
-def normalizeCoord(atoms):
+def centerCoordsInBox(atoms, tube_center):
+
+    normalizeCoords(atoms)
+
+    box_center = (box/2, box/2)
+
+    # x axis transformation
+    x_move = box_center[0] - tube_center[0]
+
+    # x axis transformation
+    y_move = box_center[1] - tube_center[0]
+
+
+    # use transformation for every atom
+    for i,atom in enumerate(atoms):
+        atoms[i][5] += x_move
+        atoms[i][6] += y_move
+
+    tube_center = box_center
+
+def normalizeCoords(atoms):
     x_min = 10000
     y_min = 10000
     z_min = 10000
     for atom in atoms:
-        x_min = min(x_min, float(atom[6]))
-        y_min = min(y_min, float(atom[7]))
-        z_min = min(z_min, float(atom[8]))
+        x_min = min(x_min, float(atom[5]))
+        y_min = min(y_min, float(atom[6]))
+        z_min = min(z_min, float(atom[7]))
 
     if x_min > 0: x_min = 0
     if y_min > 0: y_min = 0
     if z_min > 0: z_min = 0
 
-    x_min *= -1
-    y_min *= -1
-    z_min *= -1
 
     for atom in atoms:
-        atom[6] = float(atom[6]) + x_min
-        atom[7] = float(atom[7]) + y_min
-        atom[8] = float(atom[8]) + z_min
+        atom[5] = float(atom[5]) - x_min
+        atom[6] = float(atom[6]) - y_min
+        atom[7] = float(atom[7]) - z_min
 
 
 
+def formatDec(dec):
+	dec = "{:.3f}".format(float(dec))
+	return dec
+
+def formatPdbRow(atom):
+    line = 'ATOM  {:>5} {:>4} XXX  {:>4}    {:>8}{:>8}{:>8} {:>5} {:>5}          {:>2}'
+    line = line.format( atom[1], 
+						atom[2], 
+						atom[4], 
+						formatDec(atom[5]), 
+						formatDec(atom[6]), 
+						formatDec(atom[7]), 
+						"1.00", "0.00", atom[10])
+    return line+"\n"
 
 
 def assign_positions_to_oxygens_list_pdb_new(number_of_atoms, tube_center, startn):
@@ -113,8 +168,11 @@ def assign_positions_to_oxygens_list_pdb_new(number_of_atoms, tube_center, start
 
             id = startn
             #increase_by = 1.0
-            new_x = x + tube_center[0]
-            new_y = y + tube_center[1]
+            # new_x = x + tube_center[0]
+            # new_y = y + tube_center[1]
+            new_x = x 
+            new_y = y 
+
             new_z = zin
             
             coords_0 = [id, [new_x,new_y, new_z]]
@@ -134,7 +192,7 @@ def assign_positions_to_oxygens_list_pdb_new(number_of_atoms, tube_center, start
             new_x = tube_center[0]
             new_y = tube_center[1]
             new_z = zin
-            coords_0 = [id, [new_x,new_y, new_z]]
+            coords_0 = [id, [new_x, new_y, new_z]]
             
             list_positions_0.append(coords_0)
             #zin = zin + side_cube
@@ -183,11 +241,8 @@ def get_tube_center(tube_atoms):
 
         for i, atom in enumerate(tube_atoms):
             # 6 = x, 7 = y, 8 = z
-            coordsxy = [float(atom[6]), float(atom[7]), float(atom[8])]
+            coordsxy = [float(atom[5]), float(atom[6]), float(atom[7])]
             coordinatesxy.append(coordsxy)
-
-
-# ASK JOSE:  coordinates need to be scaled by this point
        
         # randomly choose 3 (x,y,z) coordinates 
         xyz1 = random.choice(coordinatesxy)
@@ -214,9 +269,11 @@ def get_tube_center(tube_atoms):
         mb = (p3[1] - p2[1]) / (p3[0] - p2[0])
         center_x = ((ma*mb*(p1[1] - p3[1])) + (mb*(p1[0] + p2[0])) - (ma*(p2[0] + p3[0]))) /(2*(mb-ma))
         center_y = ((-1/ma) * (center_x -((p1[0] + p2[0])/2.0))) + ((p1[1] + p2[1])/2.0)
-        
+
         return [center_x, center_y]
         
+
+
 def water_conections(oxygen_quantity, startn):
     conect_list = []
     i = startn #1st atom, oxygen

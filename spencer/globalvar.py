@@ -23,7 +23,8 @@ safety_clearance = 1.0
 
 # residue within pdb file for atoms (e.g. HETATM, ATOM, etc.)
 
-residue = "HETATM"
+recordType = "ATOM"
+residue = "ATOM"
 
 # nano tube structure parameters
 m = 15
