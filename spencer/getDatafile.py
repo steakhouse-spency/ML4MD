@@ -3,12 +3,67 @@ from collections import Counter
 import pandas as pd
 import numpy as np
 
+from globalvar import *
+
+
+bonds = []
+angles = []
+
+
+conects = []
+
+
+with open('data_file/{}.data'.format(label), 'w') as datafile
+
+
+
+# print header info
+
+
+for conect in conects:
+	formatBond(bonds, conect)
+	formatAngle(angles, conect)
+
+
+
+dataFileHeader(datafile, len(), len(bonds), len(angles))
+dataFileMass(datafile)
+
+
+
+
+
+def dataFileHeader(f, num_atms, num_bonds, num_angs):
+	header = "{} atoms\n{} bonds\n{} angles\n0 dihedrals\n0 impropers\n\n".format(num_atms, num_bonds, num_angs) +
+			 "{} atom types\n1 bond types\n1 angle types\n\n".format(len(elem_types)) +
+			 "0.0 {} xlo xhi\n0.0 {} ylo yhi\n0.0 {} zlo zhi\n\n".format(box, box, L)
+	print(header, file=f)
+
+def dataFileMass(datafile):
+	print("Masses\n\n", file=f)
+	for i, e in enumerate(elem_types):
+		print("{} {}".format(i+1, e), file=f)
+	print("\n\n", file=f)
+
+
+
+
+
+
+def formatWaterBond(bonds, conect):
+	for atom in conect[2:]:
+		bonds.append([conect[1], atom])
+	
+
+def formatWaterAngle(angles, conect):
+	angle = [conect[1], conect[2], conect[3]]
+	angles.append(angle)
+
+
 def main():
-    nanchors = 3
-    density = 0.471
-    charge_si = 0.6
-    atoms_per_anchor = 24
-    with open('final_pdb_{}.pdb'.format(density), 'r') as infile, open('data-file-sicnt-water-{}.data'.format(charge_si), 'w') as outfile, \
+    # nanchors = 3
+    with open('filled_tube/{}.pdb'.format(label), 'r') as filled_tube_file,\
+         open('data_file/{}.data'.format(label), 'w') as data_file
         # open('silicon.txt', 'w') as silicon_out,  open('carbon.txt', 'w') as carbon_out, open('hydrogen.txt', 'w') as hydro_out, \
         # open('oxygen.txt', 'w') as oxy_out, open('water.txt', 'w') as water_out,  open('sicnt_no_anchors.txt', 'w') as sicar_no_anch_out, \
         # open('sicnt.txt', 'w') as sicnt_out, open('anchors_T.txt', 'w') as anchors_sicnt_T, \
@@ -36,18 +91,15 @@ def main():
 
         atom_list, conections, silicon, carbon, hydrogen, oxygen, sicnt  = ([] for i in range(7))
         num_atoms = 0
-        for j, lines in enumerate(infile):
-            if j == 2:
-                di = lines.split()
-                dimen = [float(di[1]), float(di[2]), float(di[3])]    
-            
-            elif j > 8:    
+        for i, lines in enumerate(filled_tube_file):
+            if i > 0:   
                 elementspdb = lines.split()
                 
-                if elementspdb[0] =='HETATM':
+                if elementspdb[0] in record_types:
                     
                     #get atomic positions. "Atoms" part of data file
                     atomic_list = atom_line(elementspdb[1], elementspdb[5], elementspdb[6], elementspdb[7], elementspdb[10])
+
                     atom_list.append(atomic_list.get_q_type_mol_tag())
                     
                     #get groups of atoms, oxygen, carbon, hydrogen and water to be used in input file
@@ -81,10 +133,6 @@ def main():
         sicnt_s = sorted(sicnt)
         print(*water_s, file = water_out)
         print(*sicnt_s, file = sicnt_out)
-        
-        #for l in oxygen:
-            #print(l)
-        
         
         atom_list_obj = adding_numeration_to_items(atom_list)#
         atom_types_dic = atom_list_obj.count_atom_types()
@@ -219,24 +267,24 @@ def getting_anchors_evolution(atom_list, number_of_anchors, dimensions, atoms_pe
         multi_list.append(multiplier)
     #print(atom_list)
     
-#     if number_of_anchors == 3:
-#         z_closest1 = min(xyx_sicnt, key=lambda z:abs(z[4]-multi_list[0]))
-#         z_closest2 = min(xyx_sicnt, key=lambda z:abs(z[4]-multi_list[1]))
-#         z_closest3 = min(xyx_sicnt, key=lambda z:abs(z[4]-multi_list[2]))
-#         #return z_closest
-# 
-#     for lines_of_atoms in atom_list:
-#         if lines_of_atoms[6] == z_closest1[4] or lines_of_atoms[6] == z_closest2[4] or \
-#             lines_of_atoms[6] == z_closest3[4] or lines_of_atoms[6] == (z_closest1[4] - bond_length) or \
-#             lines_of_atoms[6] == (z_closest2[4] - bond_length) or lines_of_atoms[6] == (z_closest3[4] - bond_length):
-#             
-#             if lines_of_atoms[2] == 1:
-#                 si_anchor.append(lines_of_atoms[0])
-#             elif lines_of_atoms[2] == 2:
-#                 c_anchor.append(lines_of_atoms[0])
-#     anchor_ids = c_anchor + si_anchor
-#     anchor_ids_s = sorted(anchor_ids)
-    
+    #     if number_of_anchors == 3:
+    #         z_closest1 = min(xyx_sicnt, key=lambda z:abs(z[4]-multi_list[0]))
+    #         z_closest2 = min(xyx_sicnt, key=lambda z:abs(z[4]-multi_list[1]))
+    #         z_closest3 = min(xyx_sicnt, key=lambda z:abs(z[4]-multi_list[2]))
+    #         #return z_closest
+    # 
+    #     for lines_of_atoms in atom_list:
+    #         if lines_of_atoms[6] == z_closest1[4] or lines_of_atoms[6] == z_closest2[4] or \
+    #             lines_of_atoms[6] == z_closest3[4] or lines_of_atoms[6] == (z_closest1[4] - bond_length) or \
+    #             lines_of_atoms[6] == (z_closest2[4] - bond_length) or lines_of_atoms[6] == (z_closest3[4] - bond_length):
+    #             
+    #             if lines_of_atoms[2] == 1:
+    #                 si_anchor.append(lines_of_atoms[0])
+    #             elif lines_of_atoms[2] == 2:
+    #                 c_anchor.append(lines_of_atoms[0])
+    #     anchor_ids = c_anchor + si_anchor
+    #     anchor_ids_s = sorted(anchor_ids)
+        
     
     distances_for_anchors_1_C, distances_for_anchors_1_Si, distances_for_anchors_2_C, distances_for_anchors_2_Si, \
     distances_for_anchors_3_C, distances_for_anchors_3_Si =  ([] for i in range(6))
@@ -277,7 +325,7 @@ def getting_anchors_evolution(atom_list, number_of_anchors, dimensions, atoms_pe
         
         distances_for_anchors_3_Si_s = sorted(distances_for_anchors_3_Si)
         distances_for_anchors_3_C_s = sorted(distances_for_anchors_3_C)
-#------------------
+    #------------------
         
         si_anchor_1_ids = get_ids_from_dist_lists(distances_for_anchors_1_Si_s)
         c_anchor_1_ids =  get_ids_from_dist_lists(distances_for_anchors_1_C_s)

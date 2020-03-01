@@ -14,7 +14,11 @@ def seperate_empty_tube(empty_tube_file):
     conect = []
 
     # get first line as header
-    header = empty_tube_file.readline()
+    header = empty_tube_file.readline().split()
+    header[1] = str(box)
+    header[2] = str(box)
+    del header[4:]
+    header = " ".join(header) + "\n"
 
     # iterate thru file, seperate according to first column
     for i, row in enumerate(empty_tube_file):
@@ -27,7 +31,7 @@ def seperate_empty_tube(empty_tube_file):
             # atom id
             atom.append(row[6:11].strip())
             # group id
-            atom.append(row[22:26].strip())
+            atom.append('1')
             # x, y, z coord
             atom.append(row[30:38].strip())
             atom.append(row[38:46].strip())
@@ -314,7 +318,7 @@ class water_class_pdb(object):
         for hydro2_coords in self._h2_list:
             # final_line = [self._atoms, nh2, self._anumb, self._xxx, nh2-2, format(hydro2_coords[0],'.3f'),\
             #               format(hydro2_coords[1],'.3f'), format(hydro2_coords[2],'.3f'),  self._one,  self._zero,  self._hyd_element]
-            final_line = [str(nh2), str(nh2-1), formatDec(hydro2_coords[0]), formatDec(hydro2_coords[1]), formatDec(hydro2_coords[2]), self._hyd_element]
+            final_line = [str(nh2), str(nh2-2), formatDec(hydro2_coords[0]), formatDec(hydro2_coords[1]), formatDec(hydro2_coords[2]), self._hyd_element]
             nh2 = nh2 + 3
             hydro_final2.append(final_line)
 

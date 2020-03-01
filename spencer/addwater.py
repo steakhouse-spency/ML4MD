@@ -10,7 +10,7 @@ from helperfun import *
 '''
 
 # open pdb file
-empty_tube_file = open(input_file, 'r')
+empty_tube_file = open("empty_tube/{}.pdb".format(label), 'r')
 # seperate empty tube pdb file by header, atoms, conect
 header, tube_atoms, tube_conect = seperate_empty_tube(empty_tube_file)
 # close it
@@ -24,13 +24,6 @@ empty_tube_file.close()
 # get x,y coordinants representing the center of the Nano Tube  
 tube_center = get_tube_center(tube_atoms)
 print(tube_center)
-
-# move tube to center of box
-# moveTube(tube_atoms, tube_center)
-
-# centerCoordsInBox(tube_atoms, tube_center)
-
-
 
 startn = len(tube_atoms)+1
 oxygen_quantity = calculate_water_molecules_inside_nanotube(rho)
@@ -58,8 +51,7 @@ centerAtoms(water_atoms, tube_center)
 
 print("new tube center: ", get_tube_center(tube_atoms))
 
-
-final_out = open("output.pdb", 'w')
+final_out = open("filled_tube/{}.pdb".format(label), 'w')
 final_out.write(header)
 
 for atom in tube_atoms:
