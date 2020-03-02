@@ -118,6 +118,81 @@ def formatPdbRow(atom, tube):
     return line
 
 
+
+
+def dataFileHeader(f, num_atms, num_bonds, num_angs):
+    header = "{}.pdb > {}.data (lammps datafile)\n\n"\
+             "{} atoms\n{} bonds\n{} angles\n0 dihedrals\n0 impropers\n\n"\
+             "{} atom types\n1 bond types\n1 angle types\n\n"\
+             "0.0 {} xlo xhi\n0.0 {} ylo yhi\n0.0 {} zlo zhi\n"
+
+
+    header = header.format(label, label, num_atms, num_bonds, num_angs, len(elem_types), box, box, L)
+
+    print(header, file=f)
+
+def dataFileMass(f):
+    print("Masses\n", file=f)
+    for i, e in enumerate(elem_types):
+        print("{} {}".format(i+1, elem_mass[e]), file=f)
+    print("", file=f)
+
+def dataFileAtoms(f, atoms):
+    print("Atoms\n", file=f)
+    for atom in atoms:
+        e = atom[5]
+        print("{} {} {} {} {} {} {}".format(atom[0], atom[1],\
+            elem_types.index(e)+1, elem_charge[e], formatDec(atom[2]),\
+            formatDec(atom[3]), formatDec(atom[4])), file=f)
+    print("", file=f)
+
+def dataFileBonds(f, bonds):
+    print("Bonds\n", file=f)
+    for i, bond in enumerate(bonds):
+        print("{} 1 {}".format(i+1, " ".join(bond)), file=f)
+    print("", file=f)
+
+def dataFileAngles(f, angles):
+    print("Angles\n", file=f)
+    for i, angle in enumerate(angles):
+        print("{} 1 {}".format(i+1, " ".join(angle)), file=f)
+
+def formatWaterBond(bonds, conect):
+    bonds.append([conect[1], conect[2]])
+    bonds.append([conect[1], conect[3]])
+
+def formatWaterAngle(angles, conect):
+    angles.append([conect[1], conect[2], conect[3]])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # only needs 
 def get_tube_center(tube_atoms):
 

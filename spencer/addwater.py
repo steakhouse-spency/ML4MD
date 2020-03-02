@@ -23,8 +23,6 @@ empty_tube_file.close()
 '''
 # get x,y coordinants representing the center of the Nano Tube  
 tube_center = get_tube_center(tube_atoms)
-print(tube_center)
-
 startn = len(tube_atoms)+1
 oxygen_quantity = calculate_water_molecules_inside_nanotube(rho)
 oxygens = assign_positions_to_oxygens_list_pdb_new(oxygen_quantity, tube_center, startn)
@@ -39,16 +37,13 @@ hydro2_to_print = water_positions.hydro_processed2()
 water_atoms = oxygens_to_print + hydro1_to_print + hydro2_to_print
 water_atoms = sorted(water_atoms)
 water_conect = water_conections(oxygen_quantity, startn)
-
+centerAtoms(tube_atoms, tube_center)
+centerAtoms(water_atoms, tube_center)
 
 '''
     output pdb of water-filled nanotube
 
 '''
-
-centerAtoms(tube_atoms, tube_center)
-centerAtoms(water_atoms, tube_center)
-
 print("new tube center: ", get_tube_center(tube_atoms))
 
 final_out = open("filled_tube/{}.pdb".format(label), 'w')
@@ -70,17 +65,25 @@ final_out.close()
 
 
 '''
-
-    Things to do:
-
-        - normalize coordinates?
-        - check assign_positions_to_oxygens_list_pdb_new
-
-
-    Extra:
-
-        - make code nicer via some oop?
-
+    output datafile of water-filled nanotube
 
 '''
 
+bonds = []
+angles = []
+
+# with open('data_file/{}.data'.format(label), 'w') as 
+datafile = open('data_file/{}.data'.format(label), 'w')
+
+# format bonds,angles for water only
+for conect in water_conect:
+    conect = conect.split()
+    if(len(conect) == 4):
+        formatWaterBond(bonds, conect)
+        formatWaterAngle(angles, conect)
+
+dataFileHeader(datafile, len(tube_atoms)+len(water_atoms), len(bonds), len(angles))
+dataFileMass(datafile)
+dataFileAtoms(datafile, tube_atoms+water_atoms)
+dataFileBonds(datafile, bonds)
+dataFileAngles(datafile, angles)

@@ -8,56 +8,76 @@ from globalvar import *
 
 bonds = []
 angles = []
-
-
 conects = []
+
+water_conect = ['get from addwater.py']
+tube_atoms = ['get from addwater.py']
+water_atoms = ['get from addwater.py']
+
+atoms = tube_atoms + water_atoms
 
 
 with open('data_file/{}.data'.format(label), 'w') as datafile
 
-
-
-# print header info
-
-
-for conect in conects:
-	formatBond(bonds, conect)
-	formatAngle(angles, conect)
+    # print header info
+    for conect in water_conect:
+    	formatWaterBond(bonds, conect)
+    	formatWaterAngle(angles, conect)
 
 
 
-dataFileHeader(datafile, len(), len(bonds), len(angles))
-dataFileMass(datafile)
-
+    dataFileHeader(datafile, len(atoms), len(bonds), len(angles))
+    dataFileMass(datafile)
+    dataFileAtoms(datafile, atoms)
 
 
 
 
 def dataFileHeader(f, num_atms, num_bonds, num_angs):
-	header = "{} atoms\n{} bonds\n{} angles\n0 dihedrals\n0 impropers\n\n".format(num_atms, num_bonds, num_angs) +
+	header = "{}.pdb > {}.data (lammps datafile\n\n)".format(label,label) +
+             "{} atoms\n{} bonds\n{} angles\n0 dihedrals\n0 impropers\n\n".format(num_atms, num_bonds, num_angs) +
 			 "{} atom types\n1 bond types\n1 angle types\n\n".format(len(elem_types)) +
 			 "0.0 {} xlo xhi\n0.0 {} ylo yhi\n0.0 {} zlo zhi\n\n".format(box, box, L)
 	print(header, file=f)
 
-def dataFileMass(datafile):
+def dataFileMass(f):
 	print("Masses\n\n", file=f)
 	for i, e in enumerate(elem_types):
-		print("{} {}".format(i+1, e), file=f)
+		print("{} {}".format(i+1, elem_mass[e]), file=f)
 	print("\n\n", file=f)
 
+def dataFileAtoms(f, atoms):
+    print("Masses\n\n", file=f)
+    for atom in atoms:
+        e = atom[5]
+        print("{} {} {} {} {} {} {}\n".format(atom[0], atom[1],/
+            elem_types.index(e)+1, elem_charge[e],/
+            atom[2], atom[3], atom[4], file=f))
+    print("\n\n", file=f)
 
+def dataFileBonds(f, bonds):
+    print("Bonds\n\n", file=f)
+    for i, bond in enumerate(bonds):
+        print("{} 1 {}\n".format(i+1, " ".join(bond)))
+    print("\n\n", file=f)
 
-
-
+def dataFileAngles(f, angles):
+    print("Angles\n\n", file=f)
+    for i, angle in enumerate(angles):
+        print("{} 1 {}\n".format(i+1, " ".join(angle)))
+    print("\n\n", file=f)
 
 def formatWaterBond(bonds, conect):
 	for atom in conect[2:]:
 		bonds.append([conect[1], atom])
 	
-
 def formatWaterAngle(angles, conect):
 	angle = [conect[1], conect[2], conect[3]]
 	angles.append(angle)
+
+
+
+
 
 
 def main():
