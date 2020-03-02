@@ -162,7 +162,7 @@ def formatWaterBond(bonds, conect):
     bonds.append([conect[1], conect[3]])
 
 def formatWaterAngle(angles, conect):
-    angles.append([conect[1], conect[2], conect[3]])
+    angles.append([conect[2], conect[1], conect[3]])
 
 
 
