@@ -7,8 +7,10 @@
 #SBATCH --mail-user=sportega@usc.edu
 
 
-cd "$SLURM_SUBMIT_DIR"
-
+lmp_src=~/disk/lammps/lammps/src/ 
+wd=~/disk/ML4MD/spencer/lammps/
+cd $wd
 source /usr/usc/intel/16.0/setup.sh
 source /usr/usc/openmpi/1.8.8/setup.sh.intel 
-srun --mpi=pmi2 /auto/rcf-proj2/jgc/cobenare/lammps/lammps-12Dec18/src/lmp_foo < in-sicnt-wat-prod-000-nm-10_3-0-a.in
+
+srun --mpi=pmi2 $lmp_src/lmp_foo < cnt_water.in
