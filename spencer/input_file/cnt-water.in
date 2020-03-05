@@ -6,7 +6,7 @@
 variable T equal 363
 log log-${T}a.lammps
 
-#package omp 1
+package omp 1
 
 units 	real
 dimension	3
@@ -15,7 +15,7 @@ atom_style	full
 #atom_modify	id yes
 
 #--------------------------------------------------------------------ATOM-DEFINITION------------------------------------------------------------#
-read_data C_15.2.data
+read_data ../data_file/C_15.2.data
 # 1 C, 2 H, 3 O.
 
 #-----------------------------------------------------------------------SETTINGS----------------------------------------------------------------#

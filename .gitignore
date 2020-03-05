@@ -2,3 +2,6 @@ pyvenv/
 __pycache__/
 *.py[cod]
 *$py.class
+
+
+output_file/
