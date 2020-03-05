@@ -332,17 +332,36 @@ def pe_pairwise_LJ(list_oxy_positions, sigma_O, eps_O, cutoff):
     return pe_sum
 
 def water_conections(oxygen_quantity, startn):
+    print("ox_quant: ", oxygen_quantity,  "\nstartn: ", startn)
+    # exit(1)
     conect_list = []
     i = startn #1st atom, oxygen
     conect = 'CONECT'
-    while i < ((3*oxygen_quantity)+startn):
-        conection1 = " ".join([conect, str(i), str(i+1), str(i+2)]) + "\n"
-        conection2 = " ".join([conect, str(i+1), str(i)]) + "\n"
-        conection3 = " ".join([conect, str(i+2), str(i)]) + "\n"
-        cnt = [conection1, conection2, conection3]
-        i = i + 3 #to skip the previous atoms
-        #print(i)
-        conect_list.extend(cnt)
+
+    for i in range(oxygen_quantity):
+        o = i*3 + startn
+        h1 = o+1
+        h2 = o+2
+
+        conect1 = " ".join([conect, str(o), str(h1), str(h2)]) + "\n"
+        conect2 = " ".join([conect, str(h1), str(o)]) + "\n"
+        conect3 = " ".join([conect, str(h2), str(o)]) + "\n"
+
+        conect_list += [conect1, conect2, conect3]
+
+
+
+
+
+
+    # while i < ((3*oxygen_quantity)+startn):
+    #     conection1 = " ".join([conect, str(i), str(i+1), str(i+2)]) + "\n"
+    #     conection2 = " ".join([conect, str(i+1), str(i)]) + "\n"
+    #     conection3 = " ".join([conect, str(i+2), str(i)]) + "\n"
+    #     cnt = [conection1, conection2, conection3]
+    #     i = i + 3 #to skip the previous atoms
+    #     #print(i)
+    #     conect_list.extend(cnt)
     #print(oxygen_quantity+startn)
     return conect_list
       
