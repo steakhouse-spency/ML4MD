@@ -10,7 +10,7 @@ from helperfun import *
 '''
 
 # open pdb file
-empty_tube_file = open("empty_tube/{}.pdb".format(label), 'r')
+empty_tube_file = open("../empty_tube/{}.pdb".format(label), 'r')
 # seperate empty tube pdb file by header, atoms, conect
 header, tube_atoms, tube_conect = seperate_empty_tube(empty_tube_file)
 # close it
@@ -28,7 +28,7 @@ oxygen_quantity = calculate_water_molecules_inside_nanotube(rho)
 # print(oxygen_quantity)
 
 oxygens = assign_positions_to_oxygens_list_pdb_new(oxygen_quantity, tube_center, startn)
-# print(len(oxygens))
+print(len(oxygens))
 
 hyd_quantity = len(oxygens) * 2
 
@@ -62,7 +62,7 @@ centerAtoms(water_atoms, tube_center)
 '''
 print("new tube center: ", get_tube_center(tube_atoms))
 
-final_out = open("filled_tube/{}.pdb".format(label), 'w')
+final_out = open("../filled_tube/{}.pdb".format(label), 'w')
 final_out.write(header)
 
 for atom in tube_atoms:
@@ -89,7 +89,7 @@ bonds = []
 angles = []
 
 # with open('data_file/{}.data'.format(label), 'w') as 
-datafile = open('data_file/{}.data'.format(label), 'w')
+datafile = open('../data_file/{}.data'.format(label), 'w')
 
 # format bonds,angles for water only
 for conect in water_conect:

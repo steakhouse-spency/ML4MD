@@ -17,7 +17,7 @@ water_atoms = ['get from addwater.py']
 atoms = tube_atoms + water_atoms
 
 
-with open('data_file/{}.data'.format(label), 'w') as datafile
+with open('../data_file/{}.data'.format(label), 'w') as datafile
 
     # print header info
     for conect in water_conect:

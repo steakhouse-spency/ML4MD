@@ -11,8 +11,6 @@ side_cube = den_mol**(1/3)
 rho = 0.471 #value obtained from previous simulation. This is a pseudo density
 cutoff = 8.0
 
-#nanotube dimensions
-L = 82.817
 sigma_O = 3.1668
 eps_O = 0.21084
 
@@ -27,16 +25,20 @@ residue = "XXX"
 record_types = ["HETATM", "ATOM"]
 
 # nano tube structure parameters
-m = 15
 n = 7
+m = 15
 D = 15.2
 density = 0.471
 material = "C"
 
+#nanotube length (ang)
+# L = 82.817
+L = 200
+
 # pdb file path
 # only for empty nano tubes
 # pdb must only have: 1 line header, nano tube atoms of type 'residue', and CONECT for nano tube atoms
-label = "{}_{}".format(material, D)
+label = "{}{}_{}_{}".format(material, L, n, m)
 
 elem_types = ['C', 'H', 'O']
 
