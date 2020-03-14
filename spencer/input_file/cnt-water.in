@@ -6,9 +6,9 @@
 variable T equal 298
 #log log-${T}a.lammps
 
-variable label equal "C200_7_15"
+# variable label equal "C200_7_15"
 
-log ${label}.lammps
+log C200_7_15.lammps
 
 processors 1 1 16
 package omp 1
@@ -20,7 +20,7 @@ atom_style	full
 #atom_modify	id yes
 
 #--------------------------------------------------------------------ATOM-DEFINITION------------------------------------------------------------#
-read_data ../data_file/${label}.data
+read_data ../data_file/C200_7_15.data
 # 1 C, 2 H, 3 O.
 
 #-----------------------------------------------------------------------SETTINGS----------------------------------------------------------------#
