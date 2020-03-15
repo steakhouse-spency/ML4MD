@@ -332,7 +332,7 @@ def pe_pairwise_LJ(list_oxy_positions, sigma_O, eps_O, cutoff):
     return pe_sum
 
 def water_conections(oxygen_quantity, startn):
-    print("ox_quant: ", oxygen_quantity,  "\nstartn: ", startn)
+    # print("ox_quant: ", oxygen_quantity,  "\nstartn: ", startn)
     # exit(1)
     conect_list = []
     i = startn #1st atom, oxygen

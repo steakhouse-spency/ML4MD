@@ -8,6 +8,8 @@ from helperfun import *
     parse pdb with only nanotube atoms/conects
 
 '''
+if debug:
+    print("label: "+ label)
 
 # open pdb file
 empty_tube_file = open("../empty_tube/{}.pdb".format(label), 'r')
@@ -25,34 +27,23 @@ empty_tube_file.close()
 tube_center = get_tube_center(tube_atoms)
 startn = len(tube_atoms)+1
 oxygen_quantity = calculate_water_molecules_inside_nanotube(rho)
-# print(oxygen_quantity)
-
 oxygens = assign_positions_to_oxygens_list_pdb_new(oxygen_quantity, tube_center, startn)
-print(len(oxygens))
-
-hyd_quantity = len(oxygens) * 2
 
 hydro1 = adding_H1(len(oxygens), angle, bond_length)
 hydro2 = adding_H2(hydro1, angle, bond_length)
 h1_final = final_position_for_H(oxygens, hydro1) #move the water atoms from the origin to the random positions generated in oxygens
 h2_final = final_position_for_H(oxygens, hydro2)
 
-
 water_positions = water_class_pdb(oxygens, 4, h1_final, h2_final, 3, startn)
 oxygens_to_print = water_positions.oxy_processed()
 hydro1_to_print = water_positions.hydro_processed1()
 hydro2_to_print = water_positions.hydro_processed2()
 
-# print(len(oxygens_to_print))
-# print(len(hydro1_to_print))
-# print(len(hydro2_to_print))
-# exit(1)
-
 water_atoms = oxygens_to_print + hydro1_to_print + hydro2_to_print
 water_atoms = sorted(water_atoms)
-
-
 water_conect = water_conections(len(oxygens), startn)
+
+
 centerAtoms(tube_atoms, tube_center)
 centerAtoms(water_atoms, tube_center)
 
@@ -60,7 +51,11 @@ centerAtoms(water_atoms, tube_center)
     output pdb of water-filled nanotube
 
 '''
-print("new tube center: ", get_tube_center(tube_atoms))
+if debug:
+    print("new tube center: ", get_tube_center(tube_atoms))
+    print("tube atoms: %d" % len(tube_atoms))
+    print("water atoms: %d" % len(water_atoms))
+    print("total atoms: %d" % (len(water_atoms) + len(tube_atoms)))
 
 final_out = open("../filled_tube/{}.pdb".format(label), 'w')
 final_out.write(header)

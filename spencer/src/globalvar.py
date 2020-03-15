@@ -1,4 +1,31 @@
+from nanotube_radius import getDiam
+
 # global variables
+debug = True
+
+
+# nano tube structure parameters
+n = 8
+m = 9
+D = getDiam(n, m)
+
+#nanotube length (ang)
+L = 300
+
+# nano tube material
+material = "C"
+
+
+density = 0.471
+
+
+
+# pdb file path
+# only for empty nano tubes
+# pdb must only have: 1 line header, nano tube atoms of type 'residue', and CONECT for nano tube atoms
+label = "{}{}_{}_{}".format(material, int(L/10), n, m)
+
+
 
 
 # DONT CHANGE, same values for every simulation
@@ -24,21 +51,6 @@ safety_clearance = 1.0
 residue = "XXX"
 record_types = ["HETATM", "ATOM"]
 
-# nano tube structure parameters
-n = 7
-m = 15
-D = 15.2
-density = 0.471
-material = "C"
-
-#nanotube length (ang)
-# L = 82.817
-L = 200
-
-# pdb file path
-# only for empty nano tubes
-# pdb must only have: 1 line header, nano tube atoms of type 'residue', and CONECT for nano tube atoms
-label = "{}{}_{}_{}".format(material, L, n, m)
 
 elem_types = ['C', 'H', 'O']
 
