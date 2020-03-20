@@ -4,4 +4,6 @@ __pycache__/
 *$py.class
 
 
-output_file/
+sim/*
+!sim/runlmp.sh
+!sim/timesteps.times

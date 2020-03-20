@@ -8,7 +8,7 @@ from math import pi, sqrt, cos, sin, radians
 
 # function to compute nano tube diameter
 def getDiam(n, m):
-	bl = 1.42
+	bl = 1.42 # bond length for tube
 	a = bl * cos(radians(30)) * 2
 	return 2 * a * sqrt(m*m + m*n + n*n) / (2*pi)
 

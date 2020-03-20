@@ -5,12 +5,16 @@ debug = True
 
 
 # nano tube structure parameters
-n = 8
-m = 9
+n = 4
+m = 11
+
+## this is is nm not ang... okay?
 D = getDiam(n, m)
+if debug:
+	print("tube diameter: %f nm" % D)
 
 #nanotube length (ang)
-L = 300
+L = 350
 
 # nano tube material
 material = "C"
@@ -23,7 +27,7 @@ density = 0.471
 # pdb file path
 # only for empty nano tubes
 # pdb must only have: 1 line header, nano tube atoms of type 'residue', and CONECT for nano tube atoms
-label = "{}{}_{}_{}".format(material, int(L/10), n, m)
+label = "{}_{}_{}_{}".format(material, int(L/10), n, m)
 
 
 
