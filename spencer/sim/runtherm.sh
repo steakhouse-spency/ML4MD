@@ -43,7 +43,8 @@ for file in ${datafiles[*]}; do
 	echo "${lmprun} < $label.in" >> $label.slurm
 
 	# submit to slurm
-	# sbatch $label.slurm
+	sbatch $label.slurm
+	sleep 2
 
 	# reset to wd
 	cd $wd
