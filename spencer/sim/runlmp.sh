@@ -64,7 +64,8 @@ get_randnum () {
 
 
 # create list of temperatures
-T=($(seq 270 20 370))
+# T=($(seq 270 20 430))
+T=($(seq 270 20 290))
 # T=($(seq 270 20 290)) # test case (270 290)
 
 # for every temperature

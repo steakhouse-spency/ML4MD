@@ -1,14 +1,11 @@
-# CNT with REBO and tip4p-ice
-# Test 1
+# Thermalize nano tube 
 #######################################################################MINIMIZATION###############################################################
 
 #---------------------------------------------------------------------INITIALIZATION-------------------------------------------------------------#
-variable T equal 298
-#log log-${T}a.lammps
+variable T equal 400
 
-# variable label equal "C200_7_15"
-
-log C200_7_15.lammps
+variable label string
+log log-${label}-therm.lammps
 
 processors 1 1 16
 package omp 1
@@ -20,7 +17,7 @@ atom_style	full
 #atom_modify	id yes
 
 #--------------------------------------------------------------------ATOM-DEFINITION------------------------------------------------------------#
-read_data ../data_file/C200_7_15.data
+read_data ../../../data_file/${label}.data
 # 1 C, 2 H, 3 O.
 
 #-----------------------------------------------------------------------SETTINGS----------------------------------------------------------------#
@@ -138,11 +135,13 @@ unfix nvt1
 
 
 #-----------------------------------------------------------
-dump	      13 all custom 1 thermalizedcnt${T}.CNT id element type x y z
+dump	      13 all custom 1 therm-${label}-therm.lammpstrj id element type x y z
 dump_modify   13 element C H O
 run 0
 undump 13
 
+
+write_restart restart-${label}-therm.lammps
 
 
 

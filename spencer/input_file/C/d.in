@@ -118,7 +118,7 @@ unfix mom1
 
 
 #-----------------------------------------------------------
-dump	      13 all custom 1 thermalizedcnt-${T}-${nrun}-d.CNT id element type x y z
+dump	      13 all custom 1 therm-${label}-${T}_${nrun}_d.lammpstrj id element type x y z
 dump_modify   13 element C H O
 run 0
 undump 13

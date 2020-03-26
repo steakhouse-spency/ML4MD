@@ -22,6 +22,7 @@ atom_style	full
 # executing file from sim/label/temp
 
 read_data ../../../data_file/${label}.data
+
 # 1 C, 2 H, 3 O.
 
 #-----------------------------------------------------------------------SETTINGS----------------------------------------------------------------#
@@ -142,7 +143,7 @@ unfix mom1
 
 
 #-----------------------------------------------------------
-dump	      13 all custom 1 thermalizedcnt-${T}-${nrun}-a.CNT id element type x y z
+dump	      13 all custom 1 therm-${label}-${T}_${nrun}_a.lammpstrj id element type x y z
 dump_modify   13 element C H O
 run 0
 undump 13
