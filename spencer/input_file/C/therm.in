@@ -5,7 +5,7 @@
 variable T equal 400
 
 variable label string
-log log-${label}-therm.lammps
+log ${label}-therm.lammps
 
 processors 1 1 16
 package omp 1
@@ -79,7 +79,7 @@ compute pe_sumCNT 6CNT_atoms reduce sum c_pe_CNT
 
 #special_bonds lj 1e-50   1e-50   1e-50
 #dump	     5 all movie 10000 movie.mpg type type zoom 20.0 adiam 1.0 center s 0.5 0.5 0.5 view 0.0 0.0 
-dump	     adump1 all movie 100 movie1.mpg type type box yes 0.01 zoom 6.0
+dump	     adump1 all movie 100 ${label}-therm.mpg type type box yes 0.01 zoom 6.0
 
 
 
@@ -126,6 +126,7 @@ unfix nve2
 
 #--------------------
 fix nvt1 5Water_atoms	nvt temp ${T} ${T} 20.0
+fix nvt1 5Water_atoms momentum 1 linear 1 1 1 rescale
 
 run_style	verlet
 run 2000000
@@ -135,13 +136,13 @@ unfix nvt1
 
 
 #-----------------------------------------------------------
-dump	      13 all custom 1 therm-${label}-therm.lammpstrj id element type x y z
+dump	      13 all custom 1 ${label}-therm.lammpstrj id element type x y z
 dump_modify   13 element C H O
 run 0
 undump 13
 
 
-write_restart restart-${label}-therm.lammps
+write_restart ${label}-therm.restart
 
 
 

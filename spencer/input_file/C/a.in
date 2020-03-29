@@ -1,5 +1,4 @@
-# CNT with REBO and tip4p-ice
-# Test 1
+# CNT
 #######################################################################MINIMIZATION###############################################################
 
 #---------------------------------------------------------------------INITIALIZATION-------------------------------------------------------------#
@@ -7,7 +6,7 @@ variable T equal 0
 variable nrun equal 0
 variable label string 
 
-log log-${label}-${T}_${nrun}_a.lammps
+log ${label}-${T}_${nrun}_a.lammps
 
 processors 1 1 16
 package omp 1
@@ -21,7 +20,8 @@ atom_style	full
 #--------------------------------------------------------------------ATOM-DEFINITION------------------------------------------------------------#
 # executing file from sim/label/temp
 
-read_data ../../../data_file/${label}.data
+# read_data ../../../data_file/${label}.data
+read_restart  ../therm/${label}-therm.restart
 
 # 1 C, 2 H, 3 O.
 
@@ -84,7 +84,7 @@ compute pe_sumCNT 6CNT_atoms reduce sum c_pe_CNT
 
 #special_bonds lj 1e-50   1e-50   1e-50
 #dump	     5 all movie 10000 movie.mpg type type zoom 20.0 adiam 1.0 center s 0.5 0.5 0.5 view 0.0 0.0 
-dump	     adump1 all movie 100 movie1.mpg type type box yes 0.01 zoom 6.0
+dump	     adump1 all movie 100 ${label}-${T}_${nrun}_a.mpg type type box yes 0.01 zoom 6.0
 
 
 
@@ -143,12 +143,12 @@ unfix mom1
 
 
 #-----------------------------------------------------------
-dump	      13 all custom 1 therm-${label}-${T}_${nrun}_a.lammpstrj id element type x y z
+dump	      13 all custom 1 ${label}-${T}_${nrun}_a.lammpstrj id element type x y z
 dump_modify   13 element C H O
 run 0
 undump 13
 
 
-write_restart restart-${label}-${T}_${nrun}_a.lammps
+write_restart ${label}-${T}_${nrun}_a.restart
 
 #END.

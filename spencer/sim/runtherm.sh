@@ -6,12 +6,12 @@
 # must set path of src
 
 # HPC
-wd="/home/rcf-40/sportega/disk/ML4MD/spencer"
-lmpexec="/home/rcf-40/sportega/disk/lammps/lammps/src/lmp_foo"
+# wd="/home/rcf-40/sportega/disk/ML4MD/spencer"
+# lmpexec="/home/rcf-40/sportega/disk/lammps/lammps/src/lmp_foo"
 
 # Local
-#wd="/home/sportega/Desktop/dr/spencer"
-#lmpsrc="/home/rcf-proj/an2/sportega/lammps/lammps/src/lmp_foo"
+wd="/home/sportega/Desktop/dr/spencer"
+lmpexec="/home/rcf-proj/an2/sportega/lammps/lammps/src/lmp_foo"
 
 # lammps mpi execution command
 lmprun="srun --mpi=pmi2 $lmpexec"

@@ -1,5 +1,4 @@
-# CNT with REBO and tip4p-ice
-# Test 1
+# CNT 
 #######################################################################MINIMIZATION###############################################################
 
 #---------------------------------------------------------------------INITIALIZATION-------------------------------------------------------------#
@@ -7,7 +6,7 @@ variable T equal 0
 variable nrun equal 0
 variable label string 
 
-log log-${label}-${T}_${nrun}_d.lammps
+log ${label}-${T}_${nrun}_d.lammps
 
 processors 1 1 16
 package omp 1
@@ -19,7 +18,7 @@ atom_style	full
 #atom_modify	id yes
 
 #--------------------------------------------------------------------ATOM-DEFINITION------------------------------------------------------------#
-read_restart  restart-${label}-${T}_${nrun}_c.restart
+read_restart  ${label}-${T}_${nrun}_c.restart
 
 # 1 C, 2 H, 3 O.
 
@@ -118,13 +117,13 @@ unfix mom1
 
 
 #-----------------------------------------------------------
-dump	      13 all custom 1 therm-${label}-${T}_${nrun}_d.lammpstrj id element type x y z
+dump	      13 all custom 1 ${label}-${T}_${nrun}_d.lammpstrj id element type x y z
 dump_modify   13 element C H O
 run 0
 undump 13
 
 
-write_restart restart-${label}-${T}_${nrun}_d.restart
+write_restart ${label}-${T}_${nrun}_d.restart
 
 
 #END.
