@@ -4,6 +4,4 @@ __pycache__/
 *$py.class
 
 
-sim/*
-!sim/runlmp.sh
-!sim/timesteps.times
+*.mpg

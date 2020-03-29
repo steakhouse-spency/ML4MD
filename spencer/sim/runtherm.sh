@@ -6,22 +6,21 @@
 # must set path of src
 
 # HPC
-# home="/home/rcf-proj/an2/sportega"
-# wd="$home/ML4MD/spencer/"
-# lmpsrc="$home/lammps/lammps/src"
+wd="/home/rcf-40/sportega/disk/ML4MD/spencer"
+lmpexec="/home/rcf-40/sportega/disk/lammps/lammps/src/lmp_foo"
 
 # Local
-wd="/home/sportega/Desktop/dr/spencer"
-lmpsrc="/home/rcf-proj/an2/sportega/lammps/lammps/src/lmp_foo"
+#wd="/home/sportega/Desktop/dr/spencer"
+#lmpsrc="/home/rcf-proj/an2/sportega/lammps/lammps/src/lmp_foo"
 
 # lammps mpi execution command
-lmprun="srun --mpi=pmi2 $lmpsrc"
+lmprun="srun --mpi=pmi2 $lmpexec"
+
 material="C"
 
-
 cd $wd
-datafiles=($(ls data_file))
-# datafiles=("C_25_7_14")
+#datafiles=($(ls data_file))
+ datafiles=("C_25_7_14")
 
 for file in ${datafiles[*]}; do
 	echo $file
@@ -43,8 +42,8 @@ for file in ${datafiles[*]}; do
 	echo "${lmprun} < $label.in" >> $label.slurm
 
 	# submit to slurm
-	sbatch $label.slurm
-	sleep 2
+	#sbatch $label.slurm
+	#sleep 2
 
 	# reset to wd
 	cd $wd
