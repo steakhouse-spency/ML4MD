@@ -31,10 +31,12 @@ pair_style   lj/cut/tip4p/long 3 2 1 1 0.1577 10
 #for lj/cut: epsilon sigma cutoff1 cutoff2
 pair_coeff 1 1  0.0 0.0
 pair_coeff 1 2  0.0 0.0
-pair_coeff 1 3  0.108505  3.2834  #for C-O
+#pair_coeff 1 3  0.108505  3.2834  #for C-O
+pair_coeff 1 3  0.101694  3.27945  #for C-O
 pair_coeff 2 2  0.0 0.0
 pair_coeff 2 3  0.0 0.0
-pair_coeff 3 3  0.21084   3.1668#O-O
+#pair_coeff 3 3  0.21084   3.1668 #O-O
+pair_coeff 3 3  0.1852   3.1589 #O-O
 
 bond_style harmonic
 #K can be any value since it is fixed by fix shake
@@ -126,7 +128,7 @@ unfix nve2
 
 #--------------------
 fix nvt1 5Water_atoms	nvt temp ${T} ${T} 20.0
-fix nvt1 5Water_atoms momentum 1 linear 1 1 1 rescale
+fix mom1 5Water_atoms momentum 1 linear 1 1 1 rescale
 
 run_style	verlet
 run 2000000

@@ -5,8 +5,8 @@ debug = True
 
 
 # nano tube structure parameters
-n = 4
-m = 11
+n = 7
+m = 14
 
 ## this is is nm not ang... okay?
 D = getDiam(n, m)
@@ -14,7 +14,7 @@ if debug:
 	print("tube diameter: %f nm" % D)
 
 #nanotube length (ang)
-L = 350
+L = 250
 
 # nano tube material
 material = "C"
@@ -64,5 +64,5 @@ elem_mass = {'Si': 28.085,
 			 'O': 15.994}
 
 elem_charge = {	'C': 0.0, 
-			   'H': 0.5897, 
-			   'O': -1.1794}
+				'H': 0.5564, 
+			    'O': -1.1128}
