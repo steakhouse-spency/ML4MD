@@ -260,7 +260,7 @@ def assign_positions_to_oxygens_list_pdb_new(number_of_atoms, tube_center, start
     
     #pentagon
     while zin <= L:
-        for n in range(0,5):
+        for n in range(1,5):
             x = r*0.6*mt.cos(mt.radians(90+n*72))
             y = r*0.6*mt.sin(mt.radians(90+n*72))
 
