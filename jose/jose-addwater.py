@@ -205,20 +205,20 @@ def assign_positions_to_oxygens_list_pdb_new(den_mol, side_cube, Diameter, Lengt
         zin = zin + side_cube
         count_additional = count_additional + 1
 
-        if count_additional%4 == 0: #because of the 0.25  decimal
-            zin = zin - side_cube
-            id = startn
+        # if count_additional%4 == 0: #because of the 0.25  decimal
+        #     zin = zin - side_cube
+        #     id = startn
 
-            new_x = cylinder_x
-            new_y = cylinder_y
-            new_z = zin
-            coords_0 = [id, [new_x,new_y, new_z]]
+        #     new_x = cylinder_x
+        #     new_y = cylinder_y
+        #     new_z = zin
+        #     coords_0 = [id, [new_x,new_y, new_z]]
             
-            list_positions_0.append(coords_0)
-            #zin = zin + side_cube
-            #count_additional = count_additional + 1
-            startn = startn + 3
-            zin = zin + side_cube
+        #     list_positions_0.append(coords_0)
+        #     #zin = zin + side_cube
+        #     #count_additional = count_additional + 1
+        #     startn = startn + 3
+        #     zin = zin + side_cube
 
     for i in list_positions_0:
         list_positions_final.append(i[1])
