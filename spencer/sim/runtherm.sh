@@ -20,7 +20,8 @@ material="C"
 
 cd $wd
 #datafiles=($(ls data_file))
- datafiles=("C_25_7_14")
+ #datafiles=("C_25_7_14-a" "C_25_7_14-b")
+ datafiles=("C_25_7_14-b")
 
 for file in ${datafiles[*]}; do
 	echo $file
@@ -38,6 +39,10 @@ for file in ${datafiles[*]}; do
 	cp $wd/input_file/$material/therm.in $infile
 	cp $wd/slurm/$material/therm.slurm $slfile
 
+	# copy pdb for reference
+	cp $wd/filled_tube/$label.pdb .
+	cp $wd/input_file/$material/CH.rebo .
+
 	# edit files
 	sed -i "s/variable label string/variable label string $label/1" $infile
 	sed -i "s/<label>/$label/1" $slfile
@@ -45,7 +50,7 @@ for file in ${datafiles[*]}; do
 	echo "${lmprun} < ${infile}" >> $slfile
 
 	# submit to slurm
-	#sbatch $label_therm.slurm
+	sbatch $label-therm.slurm
 	#sleep 2
 
 	# reset to wd

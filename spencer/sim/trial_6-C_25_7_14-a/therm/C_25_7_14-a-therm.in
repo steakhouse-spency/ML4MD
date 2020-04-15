@@ -4,7 +4,7 @@
 #---------------------------------------------------------------------INITIALIZATION-------------------------------------------------------------#
 variable T equal 400
 
-variable label string
+variable label string C_25_7_14-a
 log ${label}-therm.lammps
 
 processors 1 1 16
