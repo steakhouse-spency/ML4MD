@@ -21,7 +21,7 @@ material="C"
 cd $wd
 #datafiles=($(ls data_file))
  #datafiles=("C_25_7_14-a" "C_25_7_14-b")
- datafiles=("C_25_7_14-a")
+ datafiles=("C_25_7_14-b")
 
 for file in ${datafiles[*]}; do
 	echo $file
