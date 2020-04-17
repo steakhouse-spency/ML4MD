@@ -149,7 +149,7 @@ fix nve2b 6CNT_atoms_no_anchors	nve
 run 288000
  
 unfix lang2a
-unifx lang2b
+unfix lang2b
 
 run 20000
 unfix nve2a
