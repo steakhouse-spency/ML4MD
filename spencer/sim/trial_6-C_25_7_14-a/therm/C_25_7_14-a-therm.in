@@ -65,10 +65,13 @@ group	5Water_atoms	type	2 3
 
 group	6CNT_atoms	type 1
 
+group	6CNT_atoms_no_anchors	id <non_anchor>
+
 group 8Hydrogen type 2
 
 group 7Oxygen type 3
 
+group 9Almost_all id <non_anchor> <water>
 
 
 kspace_style pppm/tip4p 0.00001

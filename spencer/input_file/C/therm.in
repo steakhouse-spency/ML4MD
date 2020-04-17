@@ -66,14 +66,14 @@ group	5Water_atoms	type	2 3
 group	6CNT_atoms	type 1
 
 #place the ids here-------------------------------------
-group	6CNT_atoms_no_anchors	id 
+group	6CNT_atoms_no_anchors	id <non_anchor>
 
 group 8Hydrogen type 2
 
 group 7Oxygen type 3
 
 #place the ids here---------------------------------
-group 9Almost_all id
+group 9Almost_all id <non_anchor> <water>
 
 
 
