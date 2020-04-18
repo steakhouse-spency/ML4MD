@@ -73,37 +73,38 @@ for file in ${datafiles[*]}; do
 	# no ring at 1.0
 	rings=(0.25 0.5 0.75 1.0)
 
+	# atoms per ring
+	ring_len=10
+
 	# store all non anchor ids
 	non_anchor=( )
 
 	# for every ring
-	start=1
-	count=1
+	start=$((ring_len + 1))
+	half_ring=$(echo "$ring_len * 0.5")
 	for ring in ${rings[*]}; do
 		# get id of atom in middle of ring
 		# bash cant do float arithmitic -__-
-		i=$(echo "scale=2; $tube_count*$ring" | bc)
-		# floor i value to create index
-		i=${i%.*}
+		# divide by 1 to floor decimal value
+		i=$(echo "$tube_count * $ring / 1" | bc)
 
 		# get range of atoms in ring
 		# using 10 atoms/ring 
-		range[0]=$((i-4))
-		range[1]=$((i+5))
+		range[0]=$((i - half_ring + 1))
+		range[1]=$((i + half_ring))
 
 		# debug
 		echo $ring ":" $i
 		echo "range:" ${range[*]}
 		
 		# append non-anchor atom ids
+		if [ $ring -ge 1.0 ]; then
 			# from end of last ring to end of tube
-		if [ $count -eq ${#rings[*]} ]; then
-			echo "last iter!"
-			end=$tube_count
-			# from 'start' to the first atom in this ring
+			# -10 for last ring at end of tube
+			end=$((tube_count - 10))
 		else
+			# from 'start' to the first atom in this ring
 			end=${range[0]}
-			count=$((count + 1))
 		fi
 		non_anchor+=($(seq $start $end))
 		
@@ -112,7 +113,7 @@ for file in ${datafiles[*]}; do
 	done
 
 	# get the id of the first water atom (H/O)
-	water_start=$((tube_count+1))
+	water_start=$((tube_count + 1))
 	# increment by number of water atoms
 	water_end=$((water_start + water_count))
 	# create sequence of water ids
