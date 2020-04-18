@@ -283,20 +283,20 @@ def assign_positions_to_oxygens_list_pdb_new(number_of_atoms, tube_center, start
         zin = zin + side_cube
         count_additional = count_additional + 1
 		
-        # if count_additional%4 == 0: #because of the 0.25  decimal
-        #     zin = zin - side_cube
-        #     id = startn
+        if count_additional%4 == 0: #because of the 0.25  decimal
+            zin = zin - side_cube
+            id = startn
 
-        #     new_x = tube_center[0]
-        #     new_y = tube_center[1]
-        #     new_z = zin
-        #     coords_0 = [id, [new_x, new_y, new_z]]
+            new_x = tube_center[0]
+            new_y = tube_center[1]
+            new_z = zin
+            coords_0 = [id, [new_x, new_y, new_z]]
             
-        #     list_positions_0.append(coords_0)
-        #     #zin = zin + side_cube
-        #     #count_additional = count_additional + 1
-        #     startn = startn + 3
-        #     zin = zin + side_cube
+            list_positions_0.append(coords_0)
+            #zin = zin + side_cube
+            #count_additional = count_additional + 1
+            startn = startn + 3
+            zin = zin + side_cube
 
 
     for i in list_positions_0:
