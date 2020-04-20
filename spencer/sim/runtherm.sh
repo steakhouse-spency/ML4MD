@@ -20,14 +20,14 @@ material="C"
 
 cd $wd
 #datafiles=($(ls data_file))
- datafiles=("C_25_7_14-a" "C_25_7_14-b")
-# datafiles=("C_25_7_14-b")
+datafiles=("C_25_7_14")
 
 for file in ${datafiles[*]}; do
 	echo $file
 
 	# remove file extension for label
 	label="${file%.*}"
+
 	# get nanotube material
 	material=$(echo $label |  cut -d'_' -f1)
 
@@ -81,33 +81,35 @@ for file in ${datafiles[*]}; do
 
 	# for every ring
 	start=$((ring_len + 1))
-	half_ring=$(echo "$ring_len * 0.5")
+	half_ring=$(echo "$ring_len * 0.5 / 1" | bc)
 	for ring in ${rings[*]}; do
 		# get id of atom in middle of ring
 		# bash cant do float arithmitic -__-
 		# divide by 1 to floor decimal value
-		i=$(echo "$tube_count * $ring / 1" | bc)
-
+		mid=$(echo "$tube_count * $ring / 1" | bc)
+		
 		# get range of atoms in ring
 		# using 10 atoms/ring 
-		range[0]=$((i - half_ring + 1))
-		range[1]=$((i + half_ring))
+		range[0]=$(echo "$mid - $half_ring - 1" | bc)
+		range[1]=$((mid + half_ring))
 
 		# debug
-		echo $ring ":" $i
-		echo "range:" ${range[*]}
-		
+		echo ring middle: $mid
+		echo ring range: ${range[*]}
+	
 		# append non-anchor atom ids
-		if [ $ring -ge 1.0 ]; then
+		if [ "$ring" == "1.0" ]; then
 			# from end of last ring to end of tube
 			# -10 for last ring at end of tube
+			#echo "last iter"
 			end=$((tube_count - 10))
 		else
 			# from 'start' to the first atom in this ring
-			end=${range[0]}
+			end=$((range[0] - 1))
 		fi
 		non_anchor+=($(seq $start $end))
-		
+		echo non-anchors: [$start, $end]		
+		echo --------
 		# update start to the last atom in this ring + 1
 		start=$((range[1] + 1))
 	done
