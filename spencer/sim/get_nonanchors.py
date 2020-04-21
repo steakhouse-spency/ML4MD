@@ -36,7 +36,11 @@ def get_nonanchors(tube_z):
 
 	# get sorted indicies
 	sorted_i = [i[0] for i in sorted(enumerate(tube_z), key=lambda x:x[1])]
-
+	
+	for i in range(tube_len-1, 0, -1):
+		print(
+		
+	
 	# where to place the ring
 	rings=[0.25, 0.5, 0.75, 1.0]
 
@@ -48,7 +52,19 @@ def get_nonanchors(tube_z):
 	start = ring_len
 	rng = [None, None]
 	non_anchor_i = []
-	for ring in rings:
+	anchors = [*range(0, ring_len)] + [*range(tube_len-ring_len, tube_len)]
+	for ring in rings:	
+		mid = int(tube_len*ring)
+		# get range of atoms in ring
+		rng[0] = mid - (half - 1)
+		rng[1] = mid + half + 1
+
+		anchors += [*range(rng[0], rng[1])]
+	print("anchors:")
+	print(anchors)
+	exit(1)
+
+'''	for ring in rings:
 
 		# get id of atom in middle of ring
 		mid = int(tube_len*ring)
@@ -57,6 +73,10 @@ def get_nonanchors(tube_z):
 		# using 10 atoms/ring 
 		rng[0] = mid - (half - 1)
 		rng[1] = mid + half
+
+		anchor += [*range(rng[0], rng[1]+1)]
+		
+
 
 		# append non-anchor atom ids
 		if ring != 1.0:
@@ -67,13 +87,14 @@ def get_nonanchors(tube_z):
 			# -10 for last ring at end of tube
 			#echo "last iter"
 			end = tube_len - ring_len
+			print(end, tube
 
 		# append new range of atom ids
 		non_anchor_i += [*range(start, end)]
 
 		# update start to the last atom in this ring + 1
 		start = rng[1] + 1
-
+'''
 	# convert indicies to atom ids
 	non_anchor_id = []
 	for i, anchor_i in enumerate(non_anchor_i):
