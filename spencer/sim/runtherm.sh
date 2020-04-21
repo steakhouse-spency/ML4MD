@@ -6,7 +6,7 @@
 # must set path of src
 
 # HPC
- wd="/staging/an2/sportega/ML4MD/spencer/"
+ wd="/staging/an2/sportega/ML4MD/spencer"
  lmpexec="/home/rcf-40/sportega/disk/lammps/lammps/src/lmp_foo"
 
 # Local
@@ -48,8 +48,8 @@ for file in ${datafiles[*]}; do
 
 
 	output=($(python3 $wd/sim/get_nonanchors.py $label))
-	water_count=${output[0]}
-	tube_count=${output[1]}
+	tube_count=${output[0]}
+	water_count=${output[1]}
 	non_anchor=("${output[*]:2}")
 
 	#echo $tube_count
@@ -77,7 +77,7 @@ for file in ${datafiles[*]}; do
 	echo "${lmprun} < ${infile}" >> $slfile
 
 	# submit to slurm
-	# sbatch $label-therm.slurm
+	sbatch $label-therm.slurm
 	#sleep 2
 
 	# reset to wd
