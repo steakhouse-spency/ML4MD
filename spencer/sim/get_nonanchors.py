@@ -29,30 +29,33 @@ def getAtomData():
 def Diff(li1, li2): 
     return (list(set(li1) - set(li2))) 
 
+def index_to_id(i_list, i_map):
+	ids = []
+	for i in i_list:
+		ids.append(i_map[i]+1)
+	return ids
+
 def get_nonanchors(tube_z):
 
 	# number of tube atoms
 	tube_len = len(tube_z)
 
 	# get sorted indicies
-	sorted_i = [i[0] for i in sorted(enumerate(tube_z), key=lambda x:x[1])]
-	
-	for i in range(tube_len-1, 0, -1):
-		print(
-		
+	sorted_i = [i[0] for i in sorted(enumerate(tube_z), key=lambda x:x[1])]				
 	
 	# where to place the ring
-	rings=[0.25, 0.5, 0.75, 1.0]
+	rings=[0.25, 0.5, 0.75]
 
 	# atoms per ring
 	ring_len = 10
 	half = int(ring_len/2)
 
 	# for every ring
-	start = ring_len
+	# start = ring_len
 	rng = [None, None]
-	non_anchor_i = []
+	# non_anchor_i = []
 	anchors = [*range(0, ring_len)] + [*range(tube_len-ring_len, tube_len)]
+	
 	for ring in rings:	
 		mid = int(tube_len*ring)
 		# get range of atoms in ring
@@ -60,58 +63,24 @@ def get_nonanchors(tube_z):
 		rng[1] = mid + half + 1
 
 		anchors += [*range(rng[0], rng[1])]
-	print("anchors:")
-	print(anchors)
-	exit(1)
+	
 
-'''	for ring in rings:
+	anchors = index_to_id(anchors, sorted_i)
 
-		# get id of atom in middle of ring
-		mid = int(tube_len*ring)
-		
-		# get range of atoms in ring
-		# using 10 atoms/ring 
-		rng[0] = mid - (half - 1)
-		rng[1] = mid + half
+	all_atoms = [*range(tube_len)]
+	all_atoms = index_to_id(all_atoms, sorted_i)
 
-		anchor += [*range(rng[0], rng[1]+1)]
-		
+	non_anchor = Diff(all_atoms, anchors)
 
-
-		# append non-anchor atom ids
-		if ring != 1.0:
-			# from 'start' to the first atom in this ring
-			end = rng[0]
-		else:
-			# from end of last ring to end of tube
-			# -10 for last ring at end of tube
-			#echo "last iter"
-			end = tube_len - ring_len
-			print(end, tube
-
-		# append new range of atom ids
-		non_anchor_i += [*range(start, end)]
-
-		# update start to the last atom in this ring + 1
-		start = rng[1] + 1
-'''
-	# convert indicies to atom ids
-	non_anchor_id = []
-	for i, anchor_i in enumerate(non_anchor_i):
-		non_anchor_id.append(sorted_i[anchor_i] + 1)
-		# sorted_i[i] += 1
-
-	# sort and return ids
-	non_anchor_id.sort()
-
-	return non_anchor_id
+	return non_anchor
 
 tube_z, water_id = getAtomData()
-tube_id = get_nonanchors(tube_z)
+non_anchor = get_nonanchors(tube_z)
 
-print(len(tube_id))
+print(len(tube_z))
 print(len(water_id))
-for i in tube_id:
+for i in non_anchor:
+	# increment by 1
 	print(i)
 
 
