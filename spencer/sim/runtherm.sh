@@ -43,7 +43,9 @@ for file in ${datafiles[*]}; do
 
 	# copy pdb for reference
 	cp $wd/filled_tube/$label.pdb .
-	cp $wd/input_file/$material/CH.rebo .
+	cp $wd/data_file/$label.data .
+
+	# cp $wd/input_file/$material/CH.rebo .
 
 
 

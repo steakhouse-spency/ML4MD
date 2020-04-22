@@ -17,8 +17,15 @@ def seperate_empty_tube(empty_tube_file):
     header = empty_tube_file.readline().split()
     header[1] = str(box)
     header[2] = str(box)
+
+    global box_z
+    box_z = float(header[3])
+
     del header[4:]
     header = " ".join(header) + "\n"
+
+    minz = 10000.0
+    maxz = -10000.0
 
     # iterate thru file, seperate according to first column
     for i, row in enumerate(empty_tube_file):
@@ -36,6 +43,11 @@ def seperate_empty_tube(empty_tube_file):
             atom.append(row[30:38].strip())
             atom.append(row[38:46].strip())
             atom.append(row[46:54].strip())
+            
+            z = float(row[46:54].strip())
+            maxz = max(maxz, z)
+            minz = min(minz, z)
+
             # element
             atom.append(row[76:78].strip())
             atoms.append(atom)
@@ -47,6 +59,11 @@ def seperate_empty_tube(empty_tube_file):
             print(col)
             print("file format error: check empty tube file")
             exit(1)
+
+    global L
+    L = maxz - minz
+
+    print("new tube length: ", L)
 
     return header, atoms, conect
 
@@ -101,6 +118,8 @@ def centerAtoms(atoms, tube_center):
 
 
 def formatDec(dec):
+	if float(dec) == 0:
+		dec = 0
 	dec = "{:.3f}".format(float(dec))
 	return dec
 
@@ -126,8 +145,7 @@ def dataFileHeader(f, num_atms, num_bonds, num_angs):
              "{} atom types\n1 bond types\n1 angle types\n\n"\
              "0.0 {} xlo xhi\n0.0 {} ylo yhi\n0.0 {} zlo zhi\n"
 
-
-    header = header.format(label, label, num_atms, num_bonds, num_angs, len(elem_types), box, box, L)
+    header = header.format(label, label, num_atms, num_bonds, num_angs, len(elem_types), box, box, box_z)
 
     print(header, file=f)
 

@@ -3,21 +3,20 @@ from nanotube_radius import getDiam
 # global variables
 debug = True
 
+# nano tube material
+material = "C"
 
 # nano tube structure parameters
 n = 7
 m = 14
 
+#nanotube length (ang)
+L = 250
+
 ## this is is nm not ang... okay?
 D = getDiam(n, m)
 if debug:
 	print("tube diameter: %f nm" % D)
-
-#nanotube length (ang)
-L = 250
-
-# nano tube material
-material = "C"
 
 
 density = 0.471
@@ -35,6 +34,7 @@ label = "{}_{}_{}_{}".format(material, int(L/10), n, m)
 # DONT CHANGE, same values for every simulation
 #############
 box = 150
+box_z = 0
 den_mol = 29.91577548987 #A^3/molecule
 side_cube = den_mol**(1/3)
 
