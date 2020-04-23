@@ -41,13 +41,10 @@ for file in ${datafiles[*]}; do
 	cp $wd/input_file/$material/therm.in $infile
 	cp $wd/slurm/$material/therm.slurm $slfile
 
-	# copy pdb for reference
+	# copy other files
 	cp $wd/filled_tube/$label.pdb .
 	cp $wd/data_file/$label.data .
-
-	# cp $wd/input_file/$material/CH.rebo .
-
-
+	cp $wd/input_file/$material/CH.rebo .
 
 	output=($(python3 $wd/sim/get_nonanchors.py $label))
 	tube_count=${output[0]}
