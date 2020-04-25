@@ -60,6 +60,9 @@ def seperate_empty_tube(empty_tube_file):
             print("file format error: check empty tube file")
             exit(1)
 
+    global move_z
+    move_z = (box_z - maxz)/2
+
     global L
     L = maxz - minz
 
@@ -111,9 +114,12 @@ def centerAtoms(atoms, tube_center):
     box_center = box/2
     move_x = abs(tube_center[0]-box_center)
     move_y = abs(tube_center[1]-box_center)
+
     for atom in atoms:
         atom[2] = float(atom[2]) + move_x
         atom[3] = float(atom[3]) + move_y
+        atom[4] = float(atom[4]) + move_z
+
 
 
 
