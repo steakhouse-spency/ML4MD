@@ -25,7 +25,7 @@ read_data ../../../data_file/${label}.data
 #Interactions H - O tip4p/ice
 # using Lorentz-Berthelot mixing rules
  
-#Non-bonded interactions:
+#Non-bonded interactions: Model Tip4P-2005
 pair_style   lj/cut/tip4p/long 3 2 1 1 0.1546 10 
 
 #for lj/cut: epsilon sigma cutoff1 cutoff2
