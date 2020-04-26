@@ -63,6 +63,14 @@ elem_mass = {'Si': 28.085,
 			 'H': 1.008, 
 			 'O': 15.9994}
 
-elem_charge = {	'C': 0.0,
-				'H': 0.5242, 
-			    'O': -1.0484}
+# rebo - EW
+# elem_charge = {	'C': 0.0,
+# 				'H': 0.5242, 
+# 			    'O': -1.0484}
+
+# no-rebo - 2005 
+# elem_charge = {	'C': 0.0,
+# 				'H':  0.5564, 
+# 			    'O':  -1.1128}
+
+elem_charge = None

@@ -1,8 +1,5 @@
 #!/bin/bash
 
-
-
-
 # must set path of src
 
 # HPC
@@ -20,7 +17,8 @@ material="C"
 
 cd $wd
 #datafiles=($(ls data_file))
-datafiles=("C_25_7_14")
+# datafiles=("C_25_7_14")
+datafiles=("C_25_7_14-rebo" "C_25_7_14-norebo")
 
 for file in ${datafiles[*]}; do
 	echo $file
@@ -34,12 +32,14 @@ for file in ${datafiles[*]}; do
 	# mkdir and cd into new dir
 	mkdir -p sim/$label/therm && cd "$_" 
 	
-	infile="${label}-therm.in"
-	slfile="${label}-therm.slurm"
+	infile="${label}_therm.in"
+	slfile="${label}_therm.slurm"
+
+	opt=$(echo $file | cut -d'-' -f2)
 
 	# copy input file and slurm script to new dir
-	cp $wd/input_file/$material/therm.in $infile
-	cp $wd/slurm/$material/therm.slurm $slfile
+	cp $wd/input_file/$material/$opt_therm.in $infile
+	cp $wd/slurm/$material/$opt_therm.slurm $slfile
 
 	# copy other files
 	cp $wd/filled_tube/$label.pdb .
