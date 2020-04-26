@@ -36,11 +36,12 @@ for file in ${datafiles[*]}; do
 	slfile="${label}_therm.slurm"
 
 	opt=$(echo $file | cut -d'-' -f2)
+	echo $opt
 
 	# copy input file and slurm script to new dir
-	cp $wd/input_file/$material/$opt_therm.in $infile
-	cp $wd/slurm/$material/$opt_therm.slurm $slfile
-
+	cp $wd/input_file/$material/"${opt}_therm.in" $infile
+	cp $wd/slurm/$material/therm.slurm $slfile
+	
 	# copy other files
 	cp $wd/filled_tube/$label.pdb .
 	cp $wd/data_file/$label.data .
@@ -67,8 +68,8 @@ for file in ${datafiles[*]}; do
 	#exit 1
 
 	# edit input file
-	sed -i "s|<non_anchor>|$non_anchor|g" $label-therm.in
-	sed -i "s/<water>/${water[*]}/g" $label-therm.in
+	sed -i "s|<non_anchor>|$non_anchor|g" $infile
+	sed -i "s/<water>/${water[*]}/g" $infile
 
 	sed -i "s/variable label string/variable label string $label/1" $infile
 	sed -i "s/<label>/$label/1" $slfile
@@ -76,7 +77,7 @@ for file in ${datafiles[*]}; do
 	echo "${lmprun} < ${infile}" >> $slfile
 
 	# submit to slurm
-	sbatch $label-therm.slurm
+    sbatch $slfile
 	#sleep 2
 
 	# reset to wd
