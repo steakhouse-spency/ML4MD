@@ -1,4 +1,4 @@
-# Supervised Learning Techniques to Predict the Relaxation Time of Water confined in Carbon Nanotubes
+# Supervised Learning Techniques to Predict the Relaxation Time of Water confined in Nanotubes
   
 ## Authors
 Jose Cobena (cobenare@usc.edu) - PhD CHE  
