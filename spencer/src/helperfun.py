@@ -22,7 +22,6 @@ def seperate_empty_tube(empty_tube_file):
     # box_z = float(header[3])
 
     del header[4:]
-    header = " ".join(header) + "\n"
 
     minz = 10000.0
     maxz = -10000.0
@@ -62,7 +61,13 @@ def seperate_empty_tube(empty_tube_file):
 
     global box_z
     box_z = maxz + (z_space*2)
-    header[3] = box_z
+    
+    header[3] = str(box_z)
+    header = " ".join(header) + "\n"
+
+    print("z_space: ", z_space)
+    print("box_z: ", box_z)
+    print("maxz: ", maxz)
 
 
     global move_z

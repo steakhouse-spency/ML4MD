@@ -57,7 +57,12 @@ if debug:
     print("water atoms: %d" % len(water_atoms))
     print("total atoms: %d" % (len(water_atoms) + len(tube_atoms)))
 
-final_out = open("../filled_tube/{}.pdb".format(label), 'w')
+# final_out = open("../filled_tube/{}.pdb".format(label), 'w')
+# rebo/norebo in filename
+final_out = open("../filled_tube/{}-{}.pdb".format(label,sim), 'w')
+
+
+
 final_out.write(header)
 
 for atom in tube_atoms:
@@ -84,7 +89,9 @@ bonds = []
 angles = []
 
 # with open('data_file/{}.data'.format(label), 'w') as 
-datafile = open('../data_file/{}.data'.format(label), 'w')
+# datafile = open('../data_file/{}.data'.format(label), 'w')
+# rebo/norebo
+datafile = open('../data_file/{}-{}.data'.format(label,sim), 'w')
 
 # format bonds,angles for water only
 for conect in water_conect:
