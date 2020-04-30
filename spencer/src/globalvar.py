@@ -19,6 +19,9 @@ if debug:
 	print("tube diameter: %f nm" % D)
 
 
+z_space = 0.4828
+
+
 density = 0.471
 
 

@@ -18,8 +18,8 @@ def seperate_empty_tube(empty_tube_file):
     header[1] = str(box)
     header[2] = str(box)
 
-    global box_z
-    box_z = float(header[3])
+    # global box_z
+    # box_z = float(header[3])
 
     del header[4:]
     header = " ".join(header) + "\n"
@@ -60,8 +60,14 @@ def seperate_empty_tube(empty_tube_file):
             print("file format error: check empty tube file")
             exit(1)
 
+    global box_z
+    box_z = maxz + (z_space*2)
+    header[3] = box_z
+
+
     global move_z
-    move_z = (box_z - maxz)/2
+    # move_z = (box_z - maxz)/2
+    move_z = z_space
 
     global L
     L = maxz - minz
