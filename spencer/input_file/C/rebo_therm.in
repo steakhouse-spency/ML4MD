@@ -39,12 +39,25 @@ read_data ${label}.data
 # pair_coeff 3 3  0.1852   3.1589 #O-O
 
 #Non-bonded interactions: model TIP4P-Ew + REBO
-pair_style hybrid  rebo/omp   lj/cut/tip4p/long/omp 3 2 1 1 0.1250 10 	lj/cut/coul/long/omp 10
+#pair_style hybrid  rebo/omp   lj/cut/tip4p/long/omp 3 2 1 1 0.1250 10 	lj/cut/coul/long/omp 10
+#pair_coeff * * rebo/omp CH.rebo C NULL NULL
+
+#for lj/cut: epsilon sigma cutoff1 cutoff2
+#pair_coeff 1 2 lj/cut/coul/long/omp 0.0 0.0
+#pair_coeff 1 3 lj/cut/coul/long/omp 0.004766908 3.282175 #for C-O
+#pair_coeff 2 2 lj/cut/tip4p/long/omp 0.0 0.0
+#pair_coeff 2 3 lj/cut/tip4p/long/omp 0.0 0.0
+#pair_coeff 3 3 lj/cut/tip4p/long/omp 0.00803 3.16435 #O-O
+
+
+#Recent changes: May 1st 2020
+#Non-bonded interactions: model TIP4P-Ew + REBO
+pair_style hybrid  rebo/omp   lj/cut/tip4p/long/omp 3 2 1 1 0.1250 12
 pair_coeff * * rebo/omp CH.rebo C NULL NULL
 
 #for lj/cut: epsilon sigma cutoff1 cutoff2
-pair_coeff 1 2 lj/cut/coul/long/omp 0.0 0.0
-pair_coeff 1 3 lj/cut/coul/long/omp 0.004766908 3.282175 #for C-O
+pair_coeff 1 2 lj/cut/tip4p/long/omp 0.0 0.0
+pair_coeff 1 3 lj/cut/tip4p/long/omp 0.004766908 3.282175 #for C-O
 pair_coeff 2 2 lj/cut/tip4p/long/omp 0.0 0.0
 pair_coeff 2 3 lj/cut/tip4p/long/omp 0.0 0.0
 pair_coeff 3 3 lj/cut/tip4p/long/omp 0.00803 3.16435 #O-O
@@ -161,7 +174,7 @@ fix nvt2 6CNT_atoms_no_anchors	nvt temp ${T} ${T} 20.0
 fix mom1 5Water_atoms momentum 1 linear 1 1 1 rescale
 
 run_style	verlet
-run 2000000
+run 100000
 
 unfix nvt1
 unfix nvt2

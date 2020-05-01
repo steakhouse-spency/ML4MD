@@ -18,7 +18,8 @@ material="C"
 cd $wd
 #datafiles=($(ls data_file))
 # datafiles=("C_25_7_14")
-datafiles=("C_25_7_14-rebo" "C_25_7_14-norebo")
+# datafiles=("C_25_7_14-rebo" "C_25_7_14-norebo")
+datafiles=("C_25_7_14-rebo")
 
 for file in ${datafiles[*]}; do
 	echo $file
@@ -77,7 +78,7 @@ for file in ${datafiles[*]}; do
 	echo "${lmprun} < ${infile}" >> $slfile
 
 	# submit to slurm
-    sbatch $slfile
+    # sbatch $slfile
 	#sleep 2
 
 	# reset to wd

@@ -131,7 +131,7 @@ fix nvt1 5Water_atoms	nvt temp ${T} ${T} 20.0
 fix mom1 5Water_atoms momentum 1 linear 1 1 1 rescale
 
 run_style	verlet
-run 200000
+run 100000
 
 unfix nvt1
 
