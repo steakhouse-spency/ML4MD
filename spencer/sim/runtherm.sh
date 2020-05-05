@@ -19,7 +19,7 @@ cd $wd
 #datafiles=($(ls data_file))
 # datafiles=("C_25_7_14")
 # datafiles=("C_25_7_14-rebo" "C_25_7_14-norebo")
-datafiles=("C_25_7_14-rebo")
+datafiles=("C_29_4_11-rebo")
 
 for file in ${datafiles[*]}; do
 	echo $file

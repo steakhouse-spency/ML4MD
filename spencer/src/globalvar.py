@@ -7,11 +7,11 @@ debug = True
 material = "C"
 
 # nano tube structure parameters
-n = 7
-m = 14
+n = 4
+m = 11
 
 #nanotube length (ang)
-L = 250
+L = 290
 
 ## this is is nm not ang... okay?
 D = getDiam(n, m)
@@ -67,15 +67,15 @@ elem_mass = {'Si': 28.085,
 			 'O': 15.9994}
 
 # # rebo - EW
-# sim="rebo"
-# elem_charge = {	'C': 0.0,
-# 				'H': 0.5242, 
-# 			    'O': -1.0484}
+sim="rebo"
+elem_charge = {	'C': 0.0,
+				'H': 0.5242, 
+			    'O': -1.0484}
 
 # no-rebo - 2005
-sim="norebo"
-elem_charge = {	'C': 0.0,
-				'H':  0.5564, 
-			    'O':  -1.1128}
+# sim="norebo"
+# elem_charge = {	'C': 0.0,
+# 				'H':  0.5564, 
+# 			    'O':  -1.1128}
 
 # elem_charge = None

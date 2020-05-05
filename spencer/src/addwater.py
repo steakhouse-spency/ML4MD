@@ -44,7 +44,7 @@ water_atoms = sorted(water_atoms)
 water_conect = water_conections(len(oxygens), startn)
 
 
-centerAtoms(tube_atoms, tube_center)
+# centerAtoms(tube_atoms, tube_center)
 centerAtoms(water_atoms, tube_center)
 
 '''

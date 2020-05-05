@@ -55,14 +55,17 @@ def seperate_empty_tube(empty_tube_file):
             conect.append(row.replace("  ", " "))
 
         elif record != "END":
-            print(col)
+            print("record: ", record)
             print("file format error: check empty tube file")
             exit(1)
 
     global box_z
-    box_z = maxz + (z_space*2)
-    
-    header[3] = str(box_z)
+    # box_z = maxz + (z_space*2)
+    # header[3] = str(box_z)
+
+    # keep same z size from pdb
+    box_z = header[3] 
+
     header = " ".join(header) + "\n"
 
     print("z_space: ", z_space)
@@ -71,8 +74,9 @@ def seperate_empty_tube(empty_tube_file):
 
 
     global move_z
-    # move_z = (box_z - maxz)/2
-    move_z = z_space
+    # move_z = z_space
+    # dont mover tube in z direction
+    move_z = 0
 
     global L
     L = maxz - minz
@@ -123,15 +127,27 @@ def normalizeCoords(atoms):
 
 def centerAtoms(atoms, tube_center):
     box_center = box/2
-    move_x = abs(tube_center[0]-box_center)
-    move_y = abs(tube_center[1]-box_center)
+    print(tube_center)
+    print(box_center)
+
+    # move_x = abs(tube_center[0]-box_center)
+    # move_y = abs(tube_center[1]-box_center)
+    # print("move_x: ", move_x)
+    # print("move_y: ", move_y)
+    # print("move_z: ", move_z)
+    # print("-----")
+
+    # for atom in atoms:
+    #     atom[2] = float(atom[2]) + move_x
+    #     atom[3] = float(atom[3]) + move_y
+    #     atom[4] = float(atom[4]) + move_z
 
     for atom in atoms:
-        atom[2] = float(atom[2]) + move_x
-        atom[3] = float(atom[3]) + move_y
-        atom[4] = float(atom[4]) + move_z
-
-
+        if float(atom[2]) < 70.0:
+            atom[2] = float(atom[2]) + tube_center[0]
+            atom[3] = float(atom[3]) + tube_center[1]
+        # else:
+        #     print("")
 
 
 def formatDec(dec):
