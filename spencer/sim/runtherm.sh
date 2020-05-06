@@ -47,6 +47,7 @@ for file in ${datafiles[*]}; do
 	cp $wd/filled_tube/$label.pdb .
 	cp $wd/data_file/$label.data .
 	cp $wd/input_file/$material/CH.rebo .
+	cp $wd/input_file/$material/nonanchors.txt .
 
 	output=($(python3 $wd/sim/get_nonanchors.py $label))
 	tube_count=${output[0]}
@@ -67,6 +68,8 @@ for file in ${datafiles[*]}; do
 	
 	#echo $water
 	#exit 1
+
+	non_anchor=$(cat nonanchors.txt)
 
 	# edit input file
 	sed -i "s|<non_anchor>|$non_anchor|g" $infile
