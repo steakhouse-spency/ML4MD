@@ -161,7 +161,7 @@ fix nvt2 6CNT_atoms_no_anchors	nvt temp ${T} ${T} 20.0
 fix mom1 5Water_atoms momentum 1 linear 1 1 1 rescale
 
 run_style	verlet
-run 100000
+run 1000000
 
 unfix nvt1
 unfix nvt2
