@@ -73,7 +73,7 @@ elem_mass = {'Si': 28.085,
 # 			    'O': -1.0484}
 
 # no-rebo - 2005
-sim="norebo"
+# sim="norebo"
 elem_charge = {	'C': 0.0,
 				'H':  0.5564, 
 			    'O':  -1.1128}

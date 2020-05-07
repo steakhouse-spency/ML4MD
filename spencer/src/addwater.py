@@ -59,7 +59,7 @@ if debug:
 
 # final_out = open("../filled_tube/{}.pdb".format(label), 'w')
 # rebo/norebo in filename
-final_out = open("../filled_tube/{}-{}.pdb".format(label,sim), 'w')
+final_out = open("../filled_tube/{}.pdb".format(label), 'w')
 
 
 
@@ -91,7 +91,7 @@ angles = []
 # with open('data_file/{}.data'.format(label), 'w') as 
 # datafile = open('../data_file/{}.data'.format(label), 'w')
 # rebo/norebo
-datafile = open('../data_file/{}-{}.data'.format(label,sim), 'w')
+datafile = open('../data_file/{}.data'.format(label), 'w')
 
 # format bonds,angles for water only
 for conect in water_conect:

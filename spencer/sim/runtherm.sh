@@ -40,7 +40,7 @@ for file in ${datafiles[*]}; do
 	#echo $opt
 
 	# copy input file and slurm script to new dir
-	cp $wd/input_file/$material/"therm.in" $infile
+	cp $wd/input_file/$material/therm.in $infile
 	cp $wd/slurm/$material/therm.slurm $slfile
 	
 	# copy other files
