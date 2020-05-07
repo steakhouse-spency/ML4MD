@@ -19,7 +19,7 @@ cd $wd
 #datafiles=($(ls data_file))
 # datafiles=("C_25_7_14")
 # datafiles=("C_25_7_14-rebo" "C_25_7_14-norebo")
-datafiles=("C_29_4_11-rebo" "C_29_4_11-norebo")
+datafiles=("C_29_4_11")
 
 for file in ${datafiles[*]}; do
 	echo $file
@@ -36,23 +36,23 @@ for file in ${datafiles[*]}; do
 	infile="${label}_therm.in"
 	slfile="${label}_therm.slurm"
 
-	opt=$(echo $file | cut -d'-' -f2)
-	echo $opt
+	#opt=$(echo $file | cut -d'-' -f2)
+	#echo $opt
 
 	# copy input file and slurm script to new dir
-	cp $wd/input_file/$material/"${opt}_therm.in" $infile
+	cp $wd/input_file/$material/"therm.in" $infile
 	cp $wd/slurm/$material/therm.slurm $slfile
 	
 	# copy other files
 	cp $wd/filled_tube/$label.pdb .
 	cp $wd/data_file/$label.data .
-	cp $wd/input_file/$material/CH.rebo .
-	cp $wd/input_file/$material/nonanchors.txt .
+	#cp $wd/input_file/$material/CH.rebo .
+	#cp $wd/input_file/$material/nonanchors.txt .
 
-	output=($(python3 $wd/sim/get_nonanchors.py $label))
-	tube_count=${output[0]}
-	water_count=${output[1]}
-	non_anchor=("${output[*]:2}")
+	#output=($(python3 $wd/sim/get_nonanchors.py $label))
+	#tube_count=${output[0]}
+	#water_count=${output[1]}
+	#non_anchor=("${output[*]:2}")
 
 	#echo $tube_count
 	#echo $water_count
@@ -60,20 +60,20 @@ for file in ${datafiles[*]}; do
 	#exit 1
 
 	# get the id of the first water atom (H/O)
-	water_start=$((tube_count + 1))
+	#water_start=$((tube_count + 1))
 	# increment by number of water atoms
-	water_end=$((water_start + water_count))
+	#water_end=$((water_start + water_count))
 	# create sequence of water ids
-	water=($(seq $water_start $water_end))
+	#water=($(seq $water_start $water_end))
 	
 	#echo $water
 	#exit 1
 
-	non_anchor=$(cat nonanchors.txt)
+	#non_anchor=$(cat nonanchors.txt)
 
 	# edit input file
-	sed -i "s|<non_anchor>|$non_anchor|g" $infile
-	sed -i "s/<water>/${water[*]}/g" $infile
+	#sed -i "s|<non_anchor>|$non_anchor|g" $infile
+	#sed -i "s/<water>/${water[*]}/g" $infile
 
 	sed -i "s/variable label string/variable label string $label/1" $infile
 	sed -i "s/<label>/$label/1" $slfile

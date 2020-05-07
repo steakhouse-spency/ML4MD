@@ -4,7 +4,7 @@
 #---------------------------------------------------------------------INITIALIZATION-------------------------------------------------------------#
 variable T equal 300
 
-variable label string C_29_4_11-norebo
+variable label string
 log ${label}-therm.lammps
 
 processors 1 1 16
@@ -131,7 +131,7 @@ fix nvt1 5Water_atoms	nvt temp ${T} ${T} 20.0
 fix mom1 5Water_atoms momentum 1 linear 1 1 1 rescale
 
 run_style	verlet
-run 100000
+run 1000000
 
 unfix nvt1
 
