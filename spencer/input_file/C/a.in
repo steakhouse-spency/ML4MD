@@ -20,8 +20,7 @@ atom_style	full
 #--------------------------------------------------------------------ATOM-DEFINITION------------------------------------------------------------#
 # executing file from sim/label/temp
 
-# read_data ../../../data_file/${label}.data
-read_restart  ../therm/${label}-therm.restart
+read_restart  ../../therm/${label}-therm.restart
 
 # 1 C, 2 H, 3 O.
 

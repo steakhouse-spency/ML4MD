@@ -6,25 +6,23 @@
 # must set path of src
 
 # HPC
-# home="/home/rcf-proj/an2/sportega"
-# wd="$home/ML4MD/spencer/"
-# lmpsrc="$home/lammps/lammps/src"
+wd="/staging/an2/sportega/ML4MD/spencer"
+lmpexec="/home/rcf-40/sportega/disk/lammps/lammps/src/lmp_foo"
 
-# Local
-wd="/home/sportega/Desktop/dr/spencer"
 lmpsrc="/home/rcf-proj/an2/sportega/lammps/lammps/src"
 
 # lammps mpi execution command
-lmprun="srun --mpi=pmi2 $lmpsrc/lmp_foo"
+lmprun="srun --mpi=pmi2 $lmpexec"
 
 # check arguments
 # 	ex: ./runlmp.sh C 20 7 15
 if [ $# -lt 5 ]; then
 	echo "default arguments"
 	material="C"
-	L=20
-	N=7
-	M=15
+	L=29
+	N=4
+	M=11
+	nruns=1
 else
 	# nanotube material
 	material=$1
@@ -41,7 +39,7 @@ fi
 # label for current nanotube
 label="${material}_${L}_${N}_${M}"
 #name of data file and force field file
-datafile="data_file/$label.data"
+# datafile="data_file/$label.data"
 # fffname="SiC_1989real.tersoff"
 
 # variables for sim
@@ -66,26 +64,37 @@ get_randnum () {
 # create list of temperatures
 # T=($(seq 270 20 430))
 T=($(seq 270 20 290))
-# T=($(seq 270 20 290)) # test case (270 290)
+# T=($(seq 270 20 290)) # test case 
+T=(300)
+
+
 
 # for every temperature
 for t in "${T[@]}"; do
 
-	# go to working directory
-	cd $wd
-
 	# path to simulation directory for current temperature
-	t_path=sim/$label/$t
+	t_path=$wd/sim/$label/$t
 
 	# ?
 	trun=$[(t-10)*500]
 
-	# create directories (if dne)
-	mkdir -p $t_path
+	# create Temp directory (if dne) and enter
+	mkdir -p $t_path && cd "$_"
 
 	# for n = 1 to nruns
 	runs=($(seq 1 $nruns))
 	for n in "${runs[@]}"; do
+
+		# if nrun id has been used already
+		if [-d run_$n ]; then
+			echo "$t_path/run_$n exists. Skipping."
+			continue
+		fi
+
+		# enter nrun directory
+		mkdir run_$n && cd "$_"
+
+		cp $wd/sim/timesteps.times .
 
 		# get 4 random numbers and store in list
 		declare -a rand
@@ -95,19 +104,22 @@ for t in "${T[@]}"; do
 		done
 
 		# copy data file to sim directory
-		cp $datafile $t_path/$label-$t.data
+		# cp $datafile $t_path/$label-$t.data
 
 		# for every part of the current sim (a..f)
 		for i in {a,b,c,d,e,f}; do
 			# create copy of input file and slurm script
 			run_label=$label-${t}_${n}_$i
 			echo $run_label
-			infile=$t_path/$run_label.in
-			slfile=$t_path/$run_label.slurm
+
+			# infile=$t_path/$run_label.in
+			# slfile=$t_path/$run_label.slurm
+			infile=$run_label.in
+			slfile=$run_label.slurm
 
 			# copy template input file 
-			cp input_file/$material/$i.in 		$infile
-			cp slurm/$material/template.slurm 	$slfile
+			cp $wd/input_file/$material/$i.in 		$infile
+			cp $wd/slurm/$material/template.slurm 	$slfile
 
 			#changes in input file, only the one that has the langeving thermostat, that is, the a- file
 			sed -i '/variable T equal .*/c\variable T equal '"$t"'' 			$infile
@@ -122,18 +134,20 @@ for t in "${T[@]}"; do
 			fi
 
 			# set output file
-			sed -i '/#SBATCH --output=/c\#SBATCH --output='"$run_label"'.out' $slfile
+			# sed -i '/#SBATCH --output=/c\#SBATCH --output='"$run_label"'.out' $slfile
+			sed -i 's|<label>|$run_label|g' $slfile
 
 			# append execution command to slurm script
-			echo "cd ${t_path}" >> $slfile
+			echo "cd $t_path/run_$n" >> $slfile
 			echo "${lmprun} < ${run_label}.in" >> $slfile 
 		done
 
 		# go to sim directory
-		cd $t_path
+		# cd $t_path
 
 		# submit jobs with dependencies:
 		for i in {a,b,c,d,e}; do
+			run_label=$label-${t}_${n}_$i
 			last_job=""
 			# last_job=$(sbatch --parsable ${dependency} ${run_label}.slurm)
 			if [ "$?" == "0" ]; then
@@ -146,5 +160,6 @@ for t in "${T[@]}"; do
 			fi
 		done
 		dependency=""
+		cd ..
 	done
 done

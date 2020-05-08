@@ -100,7 +100,7 @@ reset_timestep 0
 compute voro1 all voronoi/atom
 
 #get dump files: this set up only applies to file-b
-variable        file_vac file ../../timesteps.times
+variable        file_vac file timesteps.times
 variable        file_vac2 equal next(file_vac)
 dump	        d1 all custom 1 uni-file-${T}-${nrun}-*.txt id type element x y z xs ys zs xu yu zu xsu ysu zsu ix iy iz vx vy vz c_voro1[*]
 dump_modify     d1 every v_file_vac2 pad 8 first yes
