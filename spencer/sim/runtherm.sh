@@ -33,8 +33,8 @@ for file in ${datafiles[*]}; do
 	# mkdir and cd into new dir
 	mkdir -p sim/$label/therm && cd "$_" 
 	
-	infile="${label}_therm.in"
-	slfile="${label}_therm.slurm"
+	infile="${label}-therm.in"
+	slfile="${label}-therm.slurm"
 
 	#opt=$(echo $file | cut -d'-' -f2)
 	#echo $opt
@@ -81,7 +81,7 @@ for file in ${datafiles[*]}; do
 	echo "${lmprun} < ${infile}" >> $slfile
 
 	# submit to slurm
-    # sbatch $slfile
+    sbatch $slfile
 	#sleep 2
 
 	# reset to wd
