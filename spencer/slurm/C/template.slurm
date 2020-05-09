@@ -1,4 +1,5 @@
 #!/bin/bash
+#SBATCH --job-name=<i>
 #SBATCH --export=none
 #SBATCH --ntasks=16 --constraint=xeon
 #SBATCH --nodes=-1

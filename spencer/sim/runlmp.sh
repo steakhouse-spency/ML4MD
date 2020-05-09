@@ -43,7 +43,7 @@ label="${material}_${L}_${N}_${M}"
 # fffname="SiC_1989real.tersoff"
 
 # variables for sim
-SLEEP=4
+SLEEP=2
 DEBUG=0
 dependency=""
 
@@ -65,7 +65,7 @@ get_randnum () {
 # T=($(seq 270 20 430))
 T=($(seq 270 20 290))
 # T=($(seq 270 20 290)) # test case 
-T=(300)
+T=(270)
 
 
 
@@ -86,7 +86,7 @@ for t in "${T[@]}"; do
 	for n in "${runs[@]}"; do
 
 		# if nrun id has been used already
-		if [-d run_$n ]; then
+		if [ -d run_$n ]; then
 			echo "$t_path/run_$n exists. Skipping."
 			continue
 		fi
@@ -135,7 +135,8 @@ for t in "${T[@]}"; do
 
 			# set output file
 			# sed -i '/#SBATCH --output=/c\#SBATCH --output='"$run_label"'.out' $slfile
-			sed -i 's|<label>|$run_label|g' $slfile
+			sed -i 's|<i>|'"${i}"'|g' $slfile
+			sed -i 's|<label>|'"${run_label}"'|g' $slfile
 
 			# append execution command to slurm script
 			echo "cd $t_path/run_$n" >> $slfile
@@ -146,14 +147,15 @@ for t in "${T[@]}"; do
 		# cd $t_path
 
 		# submit jobs with dependencies:
-		for i in {a,b,c,d,e}; do
+		for i in {a,b,c,d,e,f}; do
 			run_label=$label-${t}_${n}_$i
-			last_job=""
-			# last_job=$(sbatch --parsable ${dependency} ${run_label}.slurm)
+			#last_job=""
+			last_job=$(sbatch --parsable ${dependency} ${run_label}.slurm)
+			echo $i: $last_job
 			if [ "$?" == "0" ]; then
-				[[ $DEBUG == 1 ]] && echo "Info: JOBID: $last_job, $n submitted"
+				echo "Info: JOBID: $last_job, $n submitted"
 				dependency="--dependency=afterany:$last_job"
-				# sleep $SLEEP
+				sleep $SLEEP
 			else
 				echo "Error exiting: sbatch $dependency ${job}${i}.slurm failed to run"
 				#exit 1
