@@ -1,0 +1,18 @@
+
+processors 1 1 16
+package omp 1
+using multi-threaded neighbor list subroutines
+
+units 	real
+dimension	3
+boundary	p p p
+atom_style	full
+#atom_modify	id yes
+
+#--------------------------------------------------------------------ATOM-DEFINITION------------------------------------------------------------#
+read_restart  ${label}-${T}_${nrun}_c.restart
+read_restart  C_29_4_11-${T}_${nrun}_c.restart
+read_restart  C_29_4_11-270_${nrun}_c.restart
+read_restart  C_29_4_11-270_1_c.restart
+ERROR on proc 0: Cannot open restart file C_29_4_11-270_1_c.restart (../read_restart.cpp:143)
+Last command: read_restart  ${label}-${T}_${nrun}_c.restart

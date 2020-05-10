@@ -1,0 +1,33 @@
+---------- Begin SLURM Prolog ----------
+Job ID:        7296613
+Username:      sportega
+Accountname:   lc_an2
+Name:          c
+Partition:     main
+Nodelist:      hpc3938
+TasksPerNode:  16
+CPUsPerTask:   Default[1]
+TMPDIR:        /tmp/7296613.main
+SCRATCHDIR:    /staging/scratch/7296613
+Cluster:       uschpc
+HSDA Account:  false
+---------- 2020-05-09 19:12:12 ---------
+LAMMPS (7 Aug 2019)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (../comm.cpp:93)
+  using 1 OpenMP thread(s) per MPI task
+using multi-threaded neighbor list subroutines
+Reading restart file ...
+ERROR on proc 0: Cannot open restart file C_29_4_11-270_1_b.restart (../read_restart.cpp:143)
+Last command: read_restart  ${label}-${T}_${nrun}_b.restart
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 0 in communicator MPI_COMM_WORLD 
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: *** STEP 7296613.0 ON hpc3938 CANCELLED AT 2020-05-09T19:12:14 ***
+srun: error: hpc3938: task 0: Exited with exit code 1
+srun: error: hpc3938: tasks 1-15: Killed
