@@ -85,7 +85,7 @@ for t in "${T[@]}"; do
 	runs=($(seq 1 $nruns))
 	for n in "${runs[@]}"; do
 
-		# if nrun id has been used already
+		# if nrun folder for this specific label exists
 		if [ -d run_$n ]; then
 			echo "$t_path/run_$n exists. Skipping."
 			continue
@@ -107,8 +107,7 @@ for t in "${T[@]}"; do
 		# cp $datafile $t_path/$label-$t.data
 
 		# for every part of the current sim (a..f)
-		# for i in {a,b,c,d,e,f}; do
-		for i in {b,c,d,e,f}; do
+		for i in {a,b,c,d,e,f}; do
 			# create copy of input file and slurm script
 			run_label=$label-${t}_${n}_$i
 			echo $run_label
@@ -148,8 +147,7 @@ for t in "${T[@]}"; do
 		# cd $t_path
 
 		# submit jobs with dependencies:
-		# for i in {a,b,c,d,e,f}; do
-		for i in {b,c,d,e,f}; do
+		for i in {a,b,c,d,e,f}; do
 			run_label=$label-${t}_${n}_$i
 			#last_job=""
 			last_job=$(sbatch --parsable ${dependency} ${run_label}.slurm)

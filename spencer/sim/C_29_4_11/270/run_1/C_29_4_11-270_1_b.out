@@ -1,0 +1,85 @@
+---------- Begin SLURM Prolog ----------
+Job ID:        7313752
+Username:      sportega
+Accountname:   lc_an2
+Name:          b
+Partition:     main
+Nodelist:      hpc3778
+TasksPerNode:  16
+CPUsPerTask:   Default[1]
+TMPDIR:        /tmp/7313752.main
+SCRATCHDIR:    /staging/scratch/7313752
+Cluster:       uschpc
+HSDA Account:  false
+---------- 2020-05-11 14:09:52 ---------
+LAMMPS (7 Aug 2019)
+OMP_NUM_THREADS environment is not set. Defaulting to 1 thread. (../comm.cpp:93)
+  using 1 OpenMP thread(s) per MPI task
+using multi-threaded neighbor list subroutines
+Reading restart file ...
+  restart file = 7 Aug 2019, LAMMPS = 7 Aug 2019
+  restoring atom style full from restart
+  orthogonal box = (0 0 0) to (150 150 288.378)
+  1 by 1 by 16 MPI processor grid
+  restoring pair style lj/cut/tip4p/long from restart
+  restoring bond style harmonic from restart
+  restoring angle style harmonic from restart
+  5084 atoms
+  976 bonds
+  488 angles
+Finding 1-2 1-3 1-4 neighbors ...
+  special bond factors lj:   0          0          0         
+  special bond factors coul: 0          0          0         
+  2 = max # of 1-2 neighbors
+  1 = max # of 1-3 neighbors
+  1 = max # of 1-4 neighbors
+  2 = max # of special neighbors
+  special bonds CPU = 0.000905991 secs
+  read_restart CPU = 0.198847 secs
+1464 atoms in group 5Water_atoms
+3620 atoms in group 6CNT_atoms
+976 atoms in group 8Hydrogen
+488 atoms in group 7Oxygen
+Finding SHAKE clusters ...
+  0 = # of size 2 clusters
+  0 = # of size 3 clusters
+  0 = # of size 4 clusters
+  488 = # of frozen angles
+  find clusters CPU = 0.000641108 secs
+PPPM initialization ...
+  extracting TIP4P info from pair style
+  using 12-bit tables for long-range coulomb (../kspace.cpp:323)
+  G vector (1/distance) = 0.243104
+  grid = 64 64 108
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.00402049
+  estimated relative force accuracy = 1.21076e-05
+  using double precision KISS FFT
+  3d grid and FFT values/proc = 61893 28672
+No /omp style for force computation currently active
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 12.3154
+  ghost atom cutoff = 12.3154
+  binsize = 6.1577, bins = 25 25 47
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut/tip4p/long, perpetual
+      attributes: half, newton on, omp
+      pair build: half/bin/newton/omp
+      stencil: half/bin/3d/newton
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : real
+  Current step  : 0
+  Time step     : 1
+Per MPI rank memory allocation (min/avg/max) = 17.19 | 17.66 | 17.93 Mbytes
+PotEng KinEng TotEng c_ke_H2O c_ke_CNT c_pe_sumH2O c_pe_sumCNT Temp c_temwater c_temcnt Press Pxx Pzz E_coul E_long Step 
+  -5804.6187    802.50731   -5002.1114    802.50731            0   -5313.4941   -491.12463    58.590767    276.12777            0    60.404804    77.932569    26.987432    34480.592    -41263.75        0 
+  -5881.3129    772.92057   -5108.3923    772.92057            0     -5384.54   -496.77287     56.43065    265.94752            0    59.618869    77.108765    26.235331    34381.361   -41264.386     2000 
+  -5860.4697    749.69079    -5110.779    749.69079            0   -5371.2783   -489.19146    54.734651    257.95459            0    59.116522    73.682014    24.722337    34430.687   -41261.889     4000 
+   -5855.454    794.60454   -5060.8495    794.60454            0   -5352.6826   -502.77146    58.013788    273.40857            0    58.127135    76.761481    23.325845    34478.941   -41262.642     6000 
+  -5882.7884    767.15146   -5115.6369    767.15146            0   -5395.8877   -486.90065    56.009448    263.96248            0    56.661407    76.788279    19.826509    34483.253   -41266.416     8000 
+  -5868.8689    790.71592    -5078.153    790.71592            0   -5369.3311   -499.53779    57.729882    272.07057            0    58.255402     76.15513    26.222689    34451.768   -41262.659    10000 
+  -5865.4549    807.73759   -5057.7173    807.73759            0   -5366.6258   -498.82915    58.972627    277.92741            0    59.391538    78.294743    23.616189    34422.962   -41260.827    12000 
+  -5870.5908    762.38647   -5108.2043    762.38647            0   -5371.2868   -499.30401    55.661558    262.32293            0    57.321991    75.233384    21.612044    34477.984   -41261.722    14000 

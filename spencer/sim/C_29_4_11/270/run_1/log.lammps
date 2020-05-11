@@ -9,7 +9,7 @@ variable T equal 270
 variable nrun equal 1
 variable label string C_29_4_11
 
-log ${label}-${T}_${nrun}_f.lammps
-log C_29_4_11-${T}_${nrun}_f.lammps
-log C_29_4_11-270_${nrun}_f.lammps
-log C_29_4_11-270_1_f.lammps
+log ${label}-${T}_${nrun}_b.lammps
+log C_29_4_11-${T}_${nrun}_b.lammps
+log C_29_4_11-270_${nrun}_b.lammps
+log C_29_4_11-270_1_b.lammps

@@ -1,0 +1,178 @@
+
+processors 1 1 16
+package omp 1
+using multi-threaded neighbor list subroutines
+
+units 	real
+dimension	3
+boundary	p p p
+atom_style	full
+#atom_modify	id yes
+
+#--------------------------------------------------------------------ATOM-DEFINITION------------------------------------------------------------#
+read_restart  ${label}-${T}_${nrun}_a.restart
+read_restart  C_29_4_11-${T}_${nrun}_a.restart
+read_restart  C_29_4_11-270_${nrun}_a.restart
+read_restart  C_29_4_11-270_1_a.restart
+  restoring atom style full from restart
+  orthogonal box = (0 0 0) to (150 150 288.378)
+  1 by 1 by 16 MPI processor grid
+  restoring pair style lj/cut/tip4p/long from restart
+  restoring bond style harmonic from restart
+  restoring angle style harmonic from restart
+  5084 atoms
+  976 bonds
+  488 angles
+  2 = max # of 1-2 neighbors
+  1 = max # of 1-3 neighbors
+  1 = max # of 1-4 neighbors
+  2 = max # of special neighbors
+  special bonds CPU = 0.000905991 secs
+  read_restart CPU = 0.198847 secs
+
+# 1 C, 2 H, 3 O.
+
+#-----------------------------------------------------------------------SETTINGS----------------------------------------------------------------#
+#THE UNITS OF SIC TERSOFF WERE CHANGED FROM METAL TO REAL
+#Interactions H - O tip4p/ice
+# using Lorentz-Berthelot mixing rules
+
+#Non-bonded interactions:
+pair_style   lj/cut/tip4p/long 3 2 1 1 0.1577 10
+
+#for lj/cut: epsilon sigma cutoff1 cutoff2
+pair_coeff 1 1  0.0 0.0
+pair_coeff 1 2  0.0 0.0
+pair_coeff 1 3  0.108505  3.2834  #for C-O
+pair_coeff 2 2  0.0 0.0
+pair_coeff 2 3  0.0 0.0
+pair_coeff 3 3  0.21084   3.1668#O-O
+
+bond_style harmonic
+#K can be any value since it is fixed by fix shake
+bond_coeff 1 5000 0.9572
+
+angle_style harmonic
+angle_coeff 1 5000 104.52
+
+
+#Box size has to be included in data file
+#all the anchors are here:
+
+group	5Water_atoms	type	2 3
+1464 atoms in group 5Water_atoms
+
+group	6CNT_atoms	type 1
+3620 atoms in group 6CNT_atoms
+
+group 8Hydrogen type 2
+976 atoms in group 8Hydrogen
+
+group 7Oxygen type 3
+488 atoms in group 7Oxygen
+
+
+
+kspace_style pppm/tip4p 0.00001
+timestep	1.0
+
+
+#---------------------------------------------------------------------------Variables-------------------------------------------------------------------------#
+
+
+compute temwater 5Water_atoms temp
+compute temcnt 6CNT_atoms temp
+
+compute ke_H2O 5Water_atoms ke
+compute pe_H2O 5Water_atoms pe/atom
+compute pe_sumH2O 5Water_atoms reduce sum c_pe_H2O
+
+compute ke_CNT 6CNT_atoms ke
+compute pe_CNT 6CNT_atoms pe/atom
+compute pe_sumCNT 6CNT_atoms reduce sum c_pe_CNT
+
+
+
+#special_bonds lj 1e-50   1e-50   1e-50
+#dump	     5 all movie 10000 movie.mpg type type zoom 20.0 adiam 1.0 center s 0.5 0.5 0.5 view 0.0 0.0
+#dump	     adump1 all movie 100 movie1.mpg type type box yes 0.01 zoom 6.0
+
+
+thermo_style custom pe ke etotal c_ke_H2O c_ke_CNT c_pe_sumH2O c_pe_sumCNT temp c_temwater c_temcnt press pxx pzz ecoul elong step
+thermo 2000
+
+fix rigidtube  6CNT_atoms setforce 0.0 0.0 0.0
+
+#Fix the bonds and angles for water (according water models)
+fix forbondsandangles 5Water_atoms shake 0.0001 500 0 b 1 a 1
+  0 = # of size 2 clusters
+  0 = # of size 3 clusters
+  0 = # of size 4 clusters
+  488 = # of frozen angles
+  find clusters CPU = 0.000641108 secs
+
+
+#set the data to collect-----
+reset_timestep 0
+
+#set voronoi compute
+compute voro1 all voronoi/atom
+
+#get dump files: this set up only applies to file-b
+variable        file_vac file timesteps.times
+variable        file_vac2 equal next(file_vac)
+dump	        d1 all custom 1 uni-file-${T}-${nrun}-*.txt id type element x y z xs ys zs xu yu zu xsu ysu zsu ix iy iz vx vy vz c_voro1[*]
+dump	        d1 all custom 1 uni-file-270-${nrun}-*.txt id type element x y z xs ys zs xu yu zu xsu ysu zsu ix iy iz vx vy vz c_voro1[*]
+dump	        d1 all custom 1 uni-file-270-1-*.txt id type element x y z xs ys zs xu yu zu xsu ysu zsu ix iy iz vx vy vz c_voro1[*]
+dump_modify     d1 every v_file_vac2 pad 8 first yes
+#---------------------------
+
+
+#run dynamics
+fix nvt1 5Water_atoms	nvt temp ${T} ${T} 20.0
+fix nvt1 5Water_atoms	nvt temp 270 ${T} 20.0
+fix nvt1 5Water_atoms	nvt temp 270 270 20.0
+fix mom1 5Water_atoms momentum 1 linear 1 1 1 rescale
+
+run_style	verlet
+run 3000000
+PPPM initialization ...
+  extracting TIP4P info from pair style
+  using 12-bit tables for long-range coulomb (../kspace.cpp:323)
+  G vector (1/distance) = 0.243104
+  grid = 64 64 108
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.00402049
+  estimated relative force accuracy = 1.21076e-05
+  using double precision KISS FFT
+  3d grid and FFT values/proc = 61893 28672
+No /omp style for force computation currently active
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 12.3154
+  ghost atom cutoff = 12.3154
+  binsize = 6.1577, bins = 25 25 47
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut/tip4p/long, perpetual
+      attributes: half, newton on, omp
+      pair build: half/bin/newton/omp
+      stencil: half/bin/3d/newton
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 17.19 | 17.66 | 17.93 Mbytes
+PotEng KinEng TotEng c_ke_H2O c_ke_CNT c_pe_sumH2O c_pe_sumCNT Temp c_temwater c_temcnt Press Pxx Pzz E_coul E_long Step 
+  -5804.6187    802.50731   -5002.1114    802.50731            0   -5313.4941   -491.12463    58.590767    276.12777            0    60.404804    77.932569    26.987432    34480.592    -41263.75        0 
+  -5881.3129    772.92057   -5108.3923    772.92057            0     -5384.54   -496.77287     56.43065    265.94752            0    59.618869    77.108765    26.235331    34381.361   -41264.386     2000 
+  -5860.4697    749.69079    -5110.779    749.69079            0   -5371.2783   -489.19146    54.734651    257.95459            0    59.116522    73.682014    24.722337    34430.687   -41261.889     4000 
+   -5855.454    794.60454   -5060.8495    794.60454            0   -5352.6826   -502.77146    58.013788    273.40857            0    58.127135    76.761481    23.325845    34478.941   -41262.642     6000 
+  -5882.7884    767.15146   -5115.6369    767.15146            0   -5395.8877   -486.90065    56.009448    263.96248            0    56.661407    76.788279    19.826509    34483.253   -41266.416     8000 
+  -5868.8689    790.71592    -5078.153    790.71592            0   -5369.3311   -499.53779    57.729882    272.07057            0    58.255402     76.15513    26.222689    34451.768   -41262.659    10000 
+  -5865.4549    807.73759   -5057.7173    807.73759            0   -5366.6258   -498.82915    58.972627    277.92741            0    59.391538    78.294743    23.616189    34422.962   -41260.827    12000 
+  -5870.5908    762.38647   -5108.2043    762.38647            0   -5371.2868   -499.30401    55.661558    262.32293            0    57.321991    75.233384    21.612044    34477.984   -41261.722    14000 
+   -5821.368     789.4314   -5031.9366     789.4314            0   -5329.3589    -492.0091    57.636099    271.62859            0    60.462573    77.774292    23.616606    34458.658   -41261.676    16000 
+  -5876.7595    804.81483   -5071.9447    804.81483            0   -5391.8601   -484.89941    58.759238    276.92174            0    58.826612    77.755395    21.947059    34431.431   -41262.017    18000 
+  -5851.8664    795.62722   -5056.2392    795.62722            0   -5359.1805   -492.68587    58.088454    273.76046            0     60.14157    76.659221    23.372753    34422.283   -41263.166    20000 
+  -5862.5828    779.46732   -5083.1155    779.46732            0   -5362.9853   -499.59751    56.908625    268.20014            0    56.748309    71.320989    24.810619    34509.027    -41263.88    22000 
+  -5860.5122    779.20549   -5081.3067    779.20549            0   -5370.7009    -489.8113    56.889509    268.11004            0    58.335155    78.861623    19.744433    34446.724   -41266.081    24000 
+  -5839.1036    800.99297   -5038.1107    800.99297            0   -5346.7547   -492.34893    58.480205    275.60671            0    59.167409    76.417862    24.447329     34466.96    -41266.22    26000 
+  -5851.3086     757.4285   -5093.8801     757.4285            0
