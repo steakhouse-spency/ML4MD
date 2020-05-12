@@ -1,4 +1,4 @@
-# Supervised Learning Techniques to Predict the Relaxation Time of Water confined in Nanotubes
+# Supervised Learning to Predict the Relaxation Time of Water confined in Nanotubes
   
 ## Authors
 Jose Cobena (cobenare@usc.edu) - PhD CHE  
@@ -9,76 +9,50 @@ Molecular dynamics (MD) simulations are typically used to study systems that are
 
 ![Image of workflow](https://github.com/spencer-ortega/cs653-final/blob/master/images/workflow.jpg)
 
-## Methodology
-
-1. Create and fill NT Structures
-    What kind?
-      C, SiC, ...
-      270 - 320 by 20
-      diameter
-    Wanted to figure out an open-source way to create structures
-      used VMD
-        creates conects for tube
-    
-    Optimally fill tube with water
-      Jose had a python script he would use for his research
-        But hardcoded for 1 type of tube
-      optimized and generalized his script
-        tons of redundant I/O
-        takes in arguments for NT properties
-        
-    At this point: Able to create nanotube with water
-      
-      
-      
-
-2. Choose and validate force fields
-
-  We initially wanted to use norebo
-    Ice4p?
-    All NT atoms are fixed
-      Water interaction was terrible using open-source tubes
-  
-  While trying to tweak and test our no-rebo approach, we simultaneously started testing rebo
-    other model name EW
-    initially thought it was norebos fault
-    rebo allows the tube to move as well
-      water still was not acting right
-    Added anchors to stabilize the tube
-      still not right
-      
-  Since both types of simulations were bad, we then focused on the tube structure
-    decided to use an empty Carbon NT from Joses previous research to see if out structure was the issue
-      ran perfectly for both norebo and rebo
-      the way we created tubes via VMD was the issue
-        still dont know exactly why
-      
-      
-  
-
-3. Simulate confined water in NT
-
-4. Compute relaxation time
-
-5. Train and test ML
-
-## Challenges
-
-## Future Work
-
-
-
-
 ## Problem
 Features (input): nano tube diamater, density (water), temperature, average displacement at time t (divergence time), intial cage-rearrangement time.
 Label (output): relaxation time (water)
 
 ## Methods
-LAMMPS - Parallel MD simulator
-Supervised Learning - regression, decesion tree, knn, NN, etc. 
+MD simulator - LAMMPS 
+Supervised Machine Learning - regression, decesion tree, knn, NN, etc. 
 
-## Expected Results
-Model that can be used to predict relaxation time of water.  
+
+
+
+## Results
+
+1. Create and fill NT Structures
+
+  The first step to our project was to create a NT given a material type (C, SiC, BN, and MoS) and tube diameter, and store in the format of a PDB and LAMMPS data file. Our initial goal was to create our NTs using only open-source software, as opposed to spending thousands of dollars on a software liscence. We found a hacky way to do just this by first creating a PDB of some NT using VMD's NT builder and importing/exporting this PDB into Chimera to create the connections of the NT atoms. Our NT was finally ready to be filled up with water.
+
+  In order to properly fill the NT, we had to figure out a way to optimally place the water atoms in the tube. Prior to the start of this project, our team member Jose had already created a python script to accomplish this. The only issue with his script was all NT variables were hard coded and it had tons of I/O redundancy. We generalized his code by allowing the user to enter the NT parameters as arguments to the program and simplified the I/O operations. At this point we believed that we had successfully created and filled these nanotube.
+
+
+2. Choose and validate force fields
+
+  Force fields (FF) in MD are usually designed to model a specific system and usually are tested to predict one or more properties of that system. Models for Carbon NT + water system are abundant; however, that is not the case for the other NTs which will require validation. Among the water models, the TIP4P family are widely used due to its accuracy. 
+
+  We initially decided to use TIP4P/2005 model with the NT positions fixed, which would accelerate our simulation by accounting for less atoms. After multiple attempts of trying this method out we noticed that water atoms were interacting very strangely [video]. Due to these result we assumed it was the doing of the model and fixed positions. We then proceeded to simultaneously test out the TIP4P/Ew model with rebo, where the NT atoms are moving and interacting with the water atoms as well. In order to make sure the NT wouldn't move during the simulation we had to set multple NT atoms as anchors (fixed position). After testing this model out we noticed that the results were very simlar to the previous mode.
+
+  Since the results from both FFs were insufficient, we had a hunch that the issue had to be related to our NT stuctures, as oppsoed to the system. The only way to prove this hypothesis was try our simulation on a NT that was created using some other software. Luckily Jose was had a NT PDB that he had created using Material Studios, which is one of those expensive licensed softwares. We ran both FFs on this tube seperately and after further investigation of the results we noticed that it was finally working, confirming that our method of creating NTs via open-source software was incorrect. With our project dealine approaching we deicied to move forward testing our system out with this new NT.
+        
+
+3. Simulate confined water in NT
+
+  We used LAMMPS for all our MD simulations. In order to get more realistic results, we have to thermalize every NT material and diameter combination once before running our long simulations.  Once we obtain the thermalized postions of the atoms for this specific NT, we could then use them to run multple simulations with different temperatures. In order to accomplish this goal and streamline our workflow, we decided to make multiple bash and python scripts that set up directory hierarchy and automate slurm submissions on USC-HPC. More information about these scripts can be found in the README of the "spencer" directory.
+
+
+
+
+
+## Future Work
+
+1. try to tweak vmd/chimera to make correct tube structures
+
+1. Compute relaxation time
+
+2. Train and test ML
 
 ## References
 [1] Cobena-Reyes, J., Kalia, R. K., & Sahimi, M. (2018). Complex behavior of ordered and icelike water in carbon nanotubes near its bulk boiling point. The journal of physical chemistry letters, 9(16), 4746-4752.
