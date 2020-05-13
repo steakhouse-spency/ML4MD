@@ -7,10 +7,10 @@ Before we can perform our simulation we must first add water atoms to our empty 
 
 2. Change PDB name to match our naming scheme.  
 Ex. &nbsp;&nbsp;M_L_n_m.pdb  
-&nbsp;&nbsp;&nbsp;&nbsp;M:&nbsp;&nbsp;Material Type (C, SiC, etc.)  
-&nbsp;&nbsp;&nbsp;&nbsp;L: &nbsp;&nbsp;NT length (nm)  
-&nbsp;&nbsp;&nbsp;&nbsp;n: &nbsp;&nbsp;NT 'n' value (diameter)  
-&nbsp;&nbsp;&nbsp;&nbsp;m: &nbsp;&nbsp;NT 'm' value (diameter)   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M:&nbsp;&nbsp;Material Type (C, SiC, etc.)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L:&nbsp;&nbsp;NT length (nm)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;n:&nbsp;&nbsp;NT 'n' value (diameter)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m:&nbsp;&nbsp;NT 'm' value (diameter)   
 
 
 3. Place this PDB inside the directory 'empty_tube/'.
