@@ -1,15 +1,15 @@
 #!/bin/bash
 
-
-
-
 # must set path of src
-
-# HPC
 wd="/staging/an2/sportega/ML4MD/spencer"
 lmpexec="/home/rcf-40/sportega/disk/lammps/lammps/src/lmp_foo"
-
 lmpsrc="/home/rcf-proj/an2/sportega/lammps/lammps/src"
+
+
+# Range of temperatures
+T=($(seq 270 20 290))
+T=(270)
+
 
 # lammps mpi execution command
 lmprun="srun --mpi=pmi2 $lmpexec"
@@ -38,9 +38,6 @@ fi
 
 # label for current nanotube
 label="${material}_${L}_${N}_${M}"
-#name of data file and force field file
-# datafile="data_file/$label.data"
-# fffname="SiC_1989real.tersoff"
 
 # variables for sim
 SLEEP=2
@@ -58,15 +55,6 @@ get_randnum () {
 	done
 	echo $num
 }
-
-
-
-# create list of temperatures
-# T=($(seq 270 20 430))
-T=($(seq 270 20 290))
-# T=($(seq 270 20 290)) # test case 
-T=(270)
-
 
 
 # for every temperature
