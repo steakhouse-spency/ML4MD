@@ -5,7 +5,7 @@ Before we can perform our simulation we must first add water atoms to our empty 
 
 1. Create a NT PDB file via some NT builder.
 
-2. Change PDB name to match our naming scheme.  
+2. Change the PDB name to match our naming scheme.  
 Ex. &nbsp;&nbsp;M_L_n_m.pdb  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M:&nbsp;&nbsp;Material Type (C, SiC, etc.)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L:&nbsp;&nbsp;NT length (nm)  
