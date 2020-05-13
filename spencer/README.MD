@@ -3,7 +3,7 @@
 ## Fill Nanotube with Water
 Before we can perform our simulation we must first add water atoms to our empty NTs.
 
-1. Create an empty NT PDB file of your choice via some NT builder.
+1. Create a NT PDB file via some NT builder.
 
 2. Change PDB name to match our naming scheme.  
 Ex. &nbsp;&nbsp;M_L_n_m.pdb  
