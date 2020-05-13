@@ -31,4 +31,4 @@ Once your NT has been thermalized, we can now begin running our long confined wa
 
 1. Enter 'sim/' directory. Open 'runlmp.sh' and update array 'T' to contain all desired temperatures to simulate.
 
-2. Execute './runlmp'. A new directory will be created for each temperature within 'sim/<NT>/' and simulations submitted via sbatch. The confined water simulation consists of six sequential simulations, labeled a-f, which can be found within the 'input_file/' directory. After all of these sequential simulations finish the trajectory files can be found within 'sim/<NT>/<T>'.
+2. Execute './runlmp'. A new directory will be created for each temperature within 'sim/NT/' and simulations submitted via sbatch. The confined water simulation consists of six sequential simulations, labeled a-f, which can be found within the 'input_file/' directory. After all of these sequential simulations finish the trajectory files can be found within 'sim/NT/T'.
