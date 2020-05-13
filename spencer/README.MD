@@ -1,16 +1,17 @@
-# Setting up Simulation
+# Setting up confined Water in Nanotube Simulation
 
-## Fill Nanotube with water
-Before we can simulate our confined water in NT we must first add water atoms.
+## Fill Nanotube with Water
+Before we can perform our simulation we must first add water atoms to our empty NTs.
 
-1. Create an empty NT PDB file of your choice.
+1. Create an empty NT PDB file of your choice via some NT builder.
 
 2. Change PDB name to match our naming scheme.  
-	Ex. C_29_4_11.pdb
-		C: 	Material Type
-		29:	NT length (nm)
-		4: 	NT 'n' value (diameter)
-		11: NT 'm' value (diameter) 
+    Ex. &nbsp;&nbsp;M_L_n_m.pdb
+&nbsp;&nbsp;&nbsp;&nbsp;M:&nbsp;&nbsp;Material Type (C, SiC, etc.)
+&nbsp;&nbsp;&nbsp;&nbsp;L: &nbsp;&nbsp;NT length (nm)
+&nbsp;&nbsp;&nbsp;&nbsp;n: &nbsp;&nbsp;NT 'n' value (diameter)
+&nbsp;&nbsp;&nbsp;&nbsp;m: &nbsp;&nbsp;NT 'm' value (diameter) 
+
 
 3. Place this PDB inside the directory 'empty_tube/'.
 
@@ -21,9 +22,9 @@ Before we can simulate our confined water in NT we must first add water atoms.
 6. Your new PDB file and LAMMPS data file can be found in  directories 'filled_tube/' and 'data_file/'
 
 ## Thermalize Nanotube
-After we have succefully filled our NT, we can now thermalize our system. One thing to note is that you only need to do this process once for every unique NT. These results are then used to run multiple  simulations with different temperatures for this specific NT.
+After we have succefully filled our NTs, we can now thermalize them. One thing to note is that you only need to do this process once for every unique NT. These results are then used to run multiple  simulations with different temperatures for this specific NT.
 
-1. Enter 'sim' directory. Open 'runtherm.sh' and update variables to match NT and local machine.
+1. Enter 'sim/' directory. Open 'runtherm.sh' and update variables to match NT and local machine.
 
 2. Execute './runtherm.sh'
 
