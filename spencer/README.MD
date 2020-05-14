@@ -1,7 +1,7 @@
 # Setting up confined Water in Nanotube Simulation
 
 ## Fill Nanotube with Water
-Before we can perform our simulation we must first add water atoms to our empty NTs.
+Before we can perform any simulation we must first add water molecules to our empty NTs.
 
 1. Create a NT PDB file via some NT builder.
 
